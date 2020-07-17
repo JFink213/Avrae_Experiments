@@ -1,0 +1,62 @@
+!alias EoN embed
+{{useCleric=exists("ClericLevel")}}
+{{lvl=int(ClericLevel) if useCleric else int(PaladinLevel)}}
+{{counter="Eyes of Night"}}
+{{mod_cc(counter, -1, True) if lvl else 0}}
+-title "<name> Uses {{counter}}."
+-desc "Your eyes are blessed, allowing you to see through the deepest gloom. You have darkvision with no maximum range; you can see in dim light as if it were bright light and in darkness as if it were dim light. You can magically give the benefit of darkvision with no maximum range to any number of creatures you can see within 10 feet of you. The shared benefit lasts for 10 minutes."
+-f "{{counter}}|{{'◉'*get_cc(counter) + '〇'*(get_cc_max(counter)-get_cc(counter))}}"
+-footer "{{"Cleric | 58-59" if useCleric else "Paladin | 85"}}" | "Made by @""Jfinkiewicz#8354"
+
+-color 8a496b -thumb <image>
+
+
+!alias VBless embed
+{{target="%1%" if "%1"+"%"!="%1%" else "Themselves"}}
+ -title "<name> gives a blessing {{f" To {target}" if target else "themselves"}}!"
+ -color 8a496b
+ -thumb <image>
+ -desc "The night has taught you to be vigilant. As an action, you give one creature you touch (including possibly yourself) advantage on the next initiative roll the creature makes. This benefit ends immediately after the roll or if you use this feature again"
+{{f'-f "Targets|{target}"' if target else "Themselves"}}
+-footer "{{"Cleric | PHB 58-59"}}" | "Made by @""Jfinkiewicz#8354"
+
+!snippet VBless adv "[Vigilant Blessing]"
+
+!alias TwilightSancturaryHP embed
+{{lvl=int(ClericLevel)}}
+{{target="%1%" if "%1"+"%"!="%1%" else "themselves"}}
+{{heal = vroll("1d8")}}
+{{set_temphp(heal.total)}}
+ -title "<name> gives a extra life force {{f" to {target}" if target else "themselves"}}!" 
+ -desc "<name> presents their holy symbol, and a sphere of twilight emanates from them. The sphere is centered on <name>, it has a 30-foot radius, and is filled with dim light. The sphere moves with <name>. It lasts for 1 minute or until <name> is incapacitated or dead. Whenever a creature ends its turn in the sphere it takes <heal> temporary hit points."
+-f "Provided|{{str(heal)}}"
+-f "Current HP|{{get_hp()}}/{{hp}}"
+-f "Current Temp HP|{{get_temphp()}}"
+{{f'-f "Targets|{target}"' if target else "Themselves"}}
+-footer "Cleric | PHB 58-59"
+-color 8a496b -thumb <image>
+
+!alias TwilightSancturaryHPCombat embed
+{{lvl, a, c =int(ClericLevel), argparse(&ARGS&), combat()}}
+{{target = a.last("t")}}
+{{target, combatant= c.get_combatant(target) if c and target else None, target if target else "themselves"}}
+{{heal = vroll("1d8")}}
+{{target.set_thp(max(target.temphp, heal.total))}}
+ -title "<name> gives a extra life force {{f" to {combatant}" if combatant else "themselves"}}!" 
+ -color 8a496b
+ -thumb <image>
+ -desc "<name> presents their holy symbol, and a sphere of twilight emanates from them. The sphere is centered on <name>, it has a 30-foot radius, and is filled with dim light. The sphere moves with <name>. It lasts for 1 minute or until <name> is incapacitated or dead. Whenever a creature ends its turn in the sphere it takes <heal> temporary hit points."
+ -f "{{target}} has {{target.hp_str()}}"
+ -footer "Made by @""Jfinkiewicz#8354"
+ 
+!alias TwilightSancturaryCureEffect embed {{P,type,a,i,c = get("ClericLevel",0), "&1&", argparse(&ARGS&), '-i' in &ARGS&, combat()}}
+{{cd,cp,target = 'charmed' in type, 'frightened' in type, a.last("t")}}
+{{target,call = c.get_combatant(target) if c and target else None, cd or cp}}
+{{ec,ef = target.get_effect('charmed') if target else '', target.get_effect('frightened') if target else ''}}
+-title "Twilight Sanctuary - Cure Effect!"
+-color 8a496b
+-thumb <image>
+{{f'-desc "{name} removes {"Charmed Condition(s)" if cd else "Frightened Condition(s)" if cp else ""} from {target.name if target else "themselves"}!" '}}
+{{f'-f "Effect|{"Charmed" if cd else "Frightened" if cp else ""} effect removed from {target.name if target else "themselves"}."' if call else ''}}
+{{target.remove_effect('charmed') if ec and call else target.remove_effect('frightened') if ef and call else ''}}
+-footer "{{f"{target}\n" if target else ""}}"|" Made by @""Jfinkiewicz#8354"
