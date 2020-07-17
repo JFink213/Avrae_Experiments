@@ -1,0 +1,12 @@
+!alias Smith check Str -b <proficiencyBonus> -title "Smithing (Str)" -phrase "<name> performs a **Smithing** check" -f "Tool Proficiency|Smiths Tools" -thumb <https://media.discordapp.net/attachments/730869447023263755/733458281087107192/Blacksmith.jpg>
+
+!alias alchemy check Intelligence -b <proficiencyBonus> -title "Alchemist's tools (Dex)" -phrase "<name> performs a Alchemist's check." -f "Tool Proficiency|Alchemist's Tools" -thumb https://cdn.discordapp.com/attachments/730869447023263755/733472433624973443/Alchemy.jpg
+
+!alias thieves check Dex -b <proficiencyBonus> -title "Thieves tools (Dex)" -phrase "<name> performs a **Theives tools** check." -f "Tool Proficiency|thieves Tools" -thumb https://cdn.discordapp.com/attachments/730869447023263755/733472021748383784/Thieves.jpg
+
+!alias Carve check Dex -b <proficiencyBonus> -title "Wood Carving (Dex)" -phrase "<name> performs a Wood Carving check" -f "Tool Proficiency|Woodcarvers Tools" -thumb https://media.discordapp.net/attachments/730869447023263755/733458368462716998/WoodCarving.jpg
+
+!alias examine check Intelligence -b <proficiencyBonus> -title "Tinkering tools (Int)" -phrase "<name> performs a **tinkering** check and examines the device." -f "Tool Proficiency|tinker's Tools" -thumb https://cdn.discordapp.com/attachments/730869447023263755/733474134822092840/Tinker.jpg
+
+!alias carpentry check Str -b <proficiencyBonus> -title "Carpentry (Dex)" -phrase "<name> performs a **carpentry** check." -f "Tool Proficiency|carpentry Tools" -thumb https://cdn.discordapp.com/attachments/730869447023263755/733458332836429864/Carpenter.jpg
+
