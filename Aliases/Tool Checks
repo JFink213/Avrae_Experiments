@@ -4,9 +4,9 @@
 
 !alias thieves check Dex -b <proficiencyBonus> -title "Thieves tools (Dex)" -phrase "<name> performs a **Theives tools** check." -f "Tool Proficiency|thieves Tools" -thumb https://cdn.discordapp.com/attachments/730869447023263755/733472021748383784/Thieves.jpg
 
-!alias Carve check Dex -b <proficiencyBonus> -title "Wood Carving (Dex)" -phrase "<name> performs a Wood Carving check" -f "Tool Proficiency|Woodcarvers Tools" -thumb https://media.discordapp.net/attachments/730869447023263755/733458368462716998/WoodCarving.jpg
+!alias woodcarving check Dex -b <proficiencyBonus> -title "Woodcarving (Dex)" -phrase "<name> performs a **Woodcarving** check.  <name> pulls out their woodcarving tools and gets to work." -f "Tool Proficiency|Woodcarvers Tools" -thumb https://cdn.discordapp.com/attachments/730869447023263755/733458368462716998/WoodCarving.jpg
 
-!alias examine check Intelligence -b <proficiencyBonus> -title "Tinkering tools (Int)" -phrase "<name> performs a **tinkering** check and examines the device." -f "Tool Proficiency|tinker's Tools" -thumb https://cdn.discordapp.com/attachments/730869447023263755/733474134822092840/Tinker.jpg
+!alias tinker check Intelligence -b <proficiencyBonus> -title "Tinkering tools (Int)" -phrase "<name> performs a **tinkering** check and examines the device." -f "Tool Proficiency|tinker's Tools" -thumb https://cdn.discordapp.com/attachments/730869447023263755/733474134822092840/Tinker.jpg
 
 !alias carpentry check Str -b <proficiencyBonus> -title "Carpentry (Dex)" -phrase "<name> performs a **carpentry** check." -f "Tool Proficiency|carpentry Tools" -thumb https://cdn.discordapp.com/attachments/730869447023263755/733458332836429864/Carpenter.jpg
 
