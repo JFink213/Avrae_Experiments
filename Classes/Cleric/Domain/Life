@@ -1,0 +1,16 @@
+As an action, you present your holy symbol and evoke healing energy that can restore a number of hit points equal to five times your cleric level. Choose any creatures within 30 feet of you, and divide those hit points among them. This feature can restore a creature to no more than half of its hit point maximum. You can’t use this feature on an undead or a construct.
+ 
+
+!alias Preserve embed {{P,a,c,  = get("ClericLevel",0), argparse(&ARGS&), combat()}}
+{{amt = int(P*5)}}
+{{target = a.last("t")}}
+{{target, combatant= c.get_combatant(target) if c and target else None, target if target else "themselves"}}
+{{cc = "Channel Divinity"}}
+{{v = cc_exists(cc) and get_cc(cc)}}
+{{mod_cc(cc, -1, True) if P else 0}}
+-title "Channel Divinity: Preserve Life!"
+-color f8f8ff
+-thumb <image>
+{{f'-desc "{name} heals {amt} to {target.name if target else "themselves"}!" '}}
+-f "{{cc}}|{{'◉'*get_cc(cc) + '〇'*(get_cc_max(cc)-get_cc(cc))}}"
+-footer "{{f"{target}\n" if target else ""}} [-t target] | Made by @""Jfinkiewicz#8354"
