@@ -8,5 +8,6 @@
 
 !alias tinker check Intelligence -b <proficiencyBonus> -title "Tinkering tools (Int)" -phrase "<name> performs a **tinkering** check and examines the device." -f "Tool Proficiency|tinker's Tools" -thumb https://cdn.discordapp.com/attachments/730869447023263755/733474134822092840/Tinker.jpg
 
-!alias carpentry check Str -b <proficiencyBonus> -title "Carpentry (Dex)" -phrase "<name> performs a **carpentry** check." -f "Tool Proficiency|carpentry Tools" -thumb https://cdn.discordapp.com/attachments/730869447023263755/733458332836429864/Carpenter.jpg
+!alias carpentry check Str -b <proficiencyBonus> -title "Carpentry (Str)" -phrase "<name> performs a **carpentry** check." -f "Tool Proficiency|carpentry Tools" -thumb https://cdn.discordapp.com/attachments/730869447023263755/733458332836429864/Carpenter.jpg
 
+!alias leather check dex -b <proficiencyBonus> -title "Leatherworking (Dex)" -phrase "<name> performs a **Leatherworking** check." -f "Tool Proficiency|Leatherworker's Tools" -thumb http://johnwhalley.com/wp-content/uploads/2016/05/8-Trio.jpg
