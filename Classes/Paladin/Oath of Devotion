@@ -1,0 +1,14 @@
+!alias SacredW embed
+{{lvl=int(PaladinLevel)}}
+{{cc="Channel Divinity"}}
+{{counter = cc }}
+{{mod_cc(cc, -1, True) if lvl else 0}}
+-title "<name> Uses {{cc}}: Sacred Weapon."
+-desc "As an action, you can imbue one weapon that you are holding with positive energy, using your Channel Divinity. For 1 minute, you add your Charisma modifier to attack rolls made with that weapon (with a minimum bonus of +1). The weapon also emits bright light in a 20-foot radius and dim light 20 feet beyond that. If the weapon is not already magical, it becomes magical for the duration.
+
+You can end this effect on your turn as part of any other action. If you are no longer holding or carrying this weapon, or if you fall unconscious, this effect ends."
+-f "DC|{{get_raw().spellbook.dc}}"
+-f "{{counter}}|{{'◉'*get_cc(counter) + '〇'*(get_cc_max(counter)-get_cc(counter))}}"
+-footer "Paladin | PHB 84" -color <color> -thumb <image>
+
+!snippet sw -b <charismaMod> [sacredWeapon]
