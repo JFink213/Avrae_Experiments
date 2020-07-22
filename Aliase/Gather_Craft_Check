@@ -5,7 +5,7 @@ Instructions: Updated see under code
 
 Copy and paste the following into Avrae-test-channel, then hit enter.
 
-!alias Gather embed
+'''!alias Gather embed
 {{args= "&ARGS&"}}
 {{adv,dis, guide, b6, b8, b10 = "adv" in args and not "dis" in args,"dis" in args and not "adv" in args, "guide" in args, "bard6" in args, "bard8" in args, "bard10" in args }}
 {{target= "&1&" or "you"}}
@@ -15,7 +15,7 @@ Copy and paste the following into Avrae-test-channel, then hit enter.
 -title "Gathering and Scavenging (Sur)" -desc "<name> performs a **Survival** check to scavenge and gather resources for the camp of {{f" {target}"}}"
 -f "<check>|**Daily  Gathering Complete** "
 -color <color>
--thumb <https://www.artnet.com/WebServices/images/ll00360lldRYYGFgBZqEfDrCWvaHBOcySVC/samuel-bough-women-gathering-firewood-in-a-forest.jpg>
+-thumb <https://www.artnet.com/WebServices/images/ll00360lldRYYGFgBZqEfDrCWvaHBOcySVC/samuel-bough-women-gathering-firewood-in-a-forest.jpg>'''
 
 ----Stop here for copy -----
 How to use:
