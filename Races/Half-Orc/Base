@@ -1,0 +1,13 @@
+!alias horcEndurance embed
+{{cc = "Relentless Endurance"}}
+{{v = cc_exists(cc) and get_cc(cc) and not get_hp()}}
+-title "{{f"{name} {'uses' if v else 'tries to use'} {cc}!"}}"
+-desc "{{ "As you drop to the ground with 0 HP, you rise with 1 HP." if v else "You can’t use this feature again until you finish a Long Rest."}}"
+{{mod_cc(cc, -1) if v else ""}}
+-f "{{f"{cc}|{cc_str(cc) if cc_exists(cc) else '*None*'}"}}"
+{{set_hp(1) if v and not get_hp() else ""}}
+-f "Current HP|{{get_hp()}}/{{hp}}"
+-color 00e4ff
+-thumb <image>
+-footer "Half-Orc Racial Trait | Modified by @""Jfinkiewicz#8354"
+
