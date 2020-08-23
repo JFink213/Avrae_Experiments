@@ -1,0 +1,29 @@
+
+Channel Divinity: Rebuke the Violent Alias:
+!alias RtV embed
+{{lvl=int(PaladinLevel)}}
+{{counter="Channel Divinity"}}
+{{mod_cc(counter, -1, True) if lvl else 0}}
+{{target="%1%" if "%1"+"%"!="%1%" else "themselves"}}
+ -title "<name> rebukes the violence of {{f" to {target}" if target else "themselves"}}!" 
+ -desc "<name> presents their holy symbol, and a concentrated blue light blasts the attacker from the heavens above. You use your reaction to force the attacker to make a Wisdom saving throw. On a failed save, the attacker takes radiant damage equal to the damage it just dealt. On a successful save, it takes half as much damage."
+{{f'-f "Targets|{target}"' if target else "Themselves"}}
+-f "{{counter}}|{{'◉'*get_cc(counter) + '〇'*(get_cc_max(counter)-get_cc(counter))}}"
+-footer "Paladin | PHB 58-59"
+-color #00ddda -thumb <thumb>
+
+Channel Divinity: Emissary of Peace Alias:
+!alias EoP embed
+{{lvl=int(PaladinLevel)}}
+{{counter="Channel Divinity"}}
+{{mod_cc(counter, -1, True) if lvl else 0}}
+{{target="%1%" if "%1"+"%"!="%1%" else "themselves"}}
+ -title "<name> becomes more Charismatic" 
+ -desc "<name> presents their holy symbol, and a brief blue light surrounds them providing a +5 increase in Charisma (Persuasion) checks for the next 10 minutes."
+{{f'-f "Targets|{target}"' if target else "Themselves"}}
+-f "{{counter}}|{{'◉'*get_cc(counter) + '〇'*(get_cc_max(counter)-get_cc(counter))}}"
+-footer "Paladin | PHB 58-59"
+-color #00ddda -thumb <thumb>
+
+Channel Divinity: Emissary of Peace Snippet:
+!snippet EoP -b 5
