@@ -1,0 +1,11 @@
+!alias gather embed
+{{args= "&ARGS&"}}
+{{adv,dis, guide, b6, b8, b10, favored = "adv" in args and not "dis" in args,"dis" in args and not "adv" in args, "guide" in args, "bard6" in args, "bard8" in args, "bard10" in args, "favored" in args }}
+{{target= "&1&" or "you"}}
+{{surv = get_raw().skills.survival}}
+{{ sroll = ("2d20kh1+" if adv else "2d20kl1+" if dis else "1d20+") +str(surv) +(( "+1d4" if guide else " ") +(" [guidance]" if guide else " ")) +(( "+1d6" if b6 else "+1d8" if b8 else "+1d10" if b10 else " ") +(" [bardic]" if b6 or b8 or b10 else " ")) + (( f'+{proficiencyBonus}' if favored else " ")+(" [favored]" if favored else " ")) }}
+{{ check = vroll(sroll) }}
+-title "Gathering and Scavenging (Sur)" -desc "<name> performs a **Survival** check to scavenge and gather resources for the camp of {{f" {target}"}}"
+-f "<check>|**Daily  Gathering Complete** "
+-color <color>
+-thumb <https://www.artnet.com/WebServices/images/ll00360lldRYYGFgBZqEfDrCWvaHBOcySVC/samuel-bough-women-gathering-firewood-in-a-forest.jpg>
