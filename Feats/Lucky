@@ -1,0 +1,12 @@
+!alias lucky embed
+
+{{cc, args = "Lucky"}}
+{{sl = get_cc(cc)}}
+
+-title "<name> spends his luck point!"
+-desc "You have 3 luck points per long rest. Whenever you make an attack roll, an ability check, or a saving throw (or when an attack roll is made against you), you can spend one to roll an additional d20 and you choose which die to use. You can choose to spend luck points after you roll the die, but before the outcome is determined."
+
+-color <color> -thumb <image>
+
+{{'' if i else mod_cc(cc, -1) if sl else err(f'No Luck point uses remaining.')}}
+{{f'-f "Luck point uses {"(-1)" if not i else ""}| {cc_str(cc)}"'}}
