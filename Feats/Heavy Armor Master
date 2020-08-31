@@ -1,0 +1,8 @@
+!alias ham g hp +{{min(int("&1&") if "&1&".isdigit() else 3,3)}}
+
+
+____________________________ In Progress _____________________________________
+!alias hamNew embed 
+hp = g hp +{{min(int("&1&") if "&1&".isdigit() else 3,3)}} -desc "<name> makes use of their training in the ways of Heavy Armor wearing to prevent some of the incoming damage" 
+-f "Current HP|{{get_hp()}}/{{hp}}"
+-footer "Made by @""Jfinkiewicz#8354"
