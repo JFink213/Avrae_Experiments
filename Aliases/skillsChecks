@@ -1,1 +1,34 @@
-TBA
+!alias armon check strength 
+-title "<name> decides she has had enough" 
+-phrase "<name> performs a strength check.....we warned you armon" 
+-thumb (insert image/gif here)
+
+!alias strength check strength 
+-title "<name> uses strength" 
+-phrase "<name> performs a strength check.....you were warned" 
+-thumb (insert image/gif here)
+
+!alias dec check deception 
+-title "<name> tries to deceive you" 
+-phrase "<name> comes up with something on the spot" 
+-thumb (insert image/gif here)
+
+!alias athletics check athletics 
+-title "<name> tries to perform a amazing feat" 
+-phrase "<name> is going to try even if she really shouldn't" 
+-thumb (insert image/gif here)
+
+!alias pers check persuasion
+-title "<name> tries another angle" 
+-phrase "<name> really means what she says" 
+-thumb (insert image/gif here)
+
+!alias stealth check stealth dis 
+-title "<name> tries to vanish into the shadows" 
+-phrase "<name> tries to become one with the shadows" 
+-thumb (insert image/gif here)
+
+!alias per check perception
+-title "<name> uses her senses" 
+-phrase "<name> taps into her senses, attempting to focus" 
+-thumb (inset image/gif here)
