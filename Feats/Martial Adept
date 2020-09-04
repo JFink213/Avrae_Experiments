@@ -60,7 +60,7 @@
 !alias evasive embed
 {{cc = "Martial Adept"}}
 {{v=cc_exists(cc) and get_cc(cc)}}
--title " <name> uses their training in combat to take an evasive stance"
+-title " <name> uses their training in combat to take an evasive movement"
 {{mod_cc(cc, -1) if v else ''}}
 {{sDie = vroll("1d6")}}
 -f "Superiority Die|{{sDie}}"
