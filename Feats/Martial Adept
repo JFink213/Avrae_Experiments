@@ -1,0 +1,18 @@
+!snippet feint {{cc = "Martial Adept"}}
+{{v=cc_exists(cc) and get_cc(cc)}}
+-title "{{f"[name] {'attempts to land a feinting strike' if v else 'tries to land a feinting strike'} with [aname]!"}}"
+{{mod_cc(cc, -1) if v else ''}}
+{{'adv' if v else 'miss -phrase "but failed due to being out of Superiority Dice!"'}}
+{{'-d 1d6' if v else 'miss -phrase "but failed due to being out of Superiority Dice!"'}} 
+-f "Feinting Attack|You can expend one superiority die and use a bonus action on your turn to feint, choosing one creature within 5 feet of you as your target. You have advantage on your next attack roll against that creature this turn. If that attack hits, add the superiority die to the attack’s damage roll."
+{{combat().me.add_effect("Feinted","",1) if v and combat() and combat().me else '' # Why are you adding an effect anyway?}}
+-f "Martial Adept{{" (-1)" if v else ''}}|{{cc_str(cc)}}"
+
+!snippet ri {{cc = "Martial Adept"}}
+{{v=cc_exists(cc) and get_cc(cc)}}
+-title "{{f"[name] {'ripostes' if v else 'tries to riposte'} with [aname]!"}}"
+{{mod_cc(cc, -1) if v else ''}}
+{{'-d 1d6' if v else 'miss -phrase "but failed due to being out of Superiority Dice!"'}} 
+-f "**Riposte**|When a creature misses you with a melee attack, you can use your reaction and expend one superiority die to make a melee weapon attack against the creature. If you hit, you add the superiority die to the attack's damage roll."
+{{combat().me.add_effect("Riposted","",1) if v and combat() and combat().me else '' # Why are you adding an effect anyway?}}
+-f "Martial Adept{{" (-1)" if v else ''}}|{{cc_str(cc)}}"
