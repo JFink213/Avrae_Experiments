@@ -16,3 +16,54 @@
 -f "**Riposte**|When a creature misses you with a melee attack, you can use your reaction and expend one superiority die to make a melee weapon attack against the creature. If you hit, you add the superiority die to the attack's damage roll."
 {{combat().me.add_effect("Riposted","",1) if v and combat() and combat().me else '' # Why are you adding an effect anyway?}}
 -f "Martial Adept{{" (-1)" if v else ''}}|{{cc_str(cc)}}"
+
+!alias cs embed
+{{cc = "Martial Adept"}}
+{{v=cc_exists(cc) and get_cc(cc)}}
+-title " <name> Initiates a Commander's Strike."
+{{mod_cc(cc, -1) if v else ''}}
+{{sDie = vroll("1d6")}}
+-f "Superiority Die|{{sDie}}"
+-f "Commander's Strike|When you take the Attack action on your turn, you can forgo one of your attacks and use a bonus action to direct one of your companions to strike. When you do so, choose a friendly creature who can see or hear you and expend one superiority die. That creature can immediately use its reaction to make one weapon attack, adding the superiority die to the attack’s damage roll."
+-f "Martial Adept{{" (-1)" if v else ''}}|{{cc_str(cc)}}"
+
+!snippet cs embed
+{{cc = "Martial Adept"}}
+{{v=cc_exists(cc) and get_cc(cc)}}
+-title "{{f" [name] {'Initiates a Commanders Strike' if v else 'fails to Initiate a Commanders Strike'} with [aname]!"}}"
+{{mod_cc(cc, -1) if v else ''}}
+{{sDie = vroll("1d6")}}
+-f "Superiority Die|{{sDie}}"
+-f "Commander's Strike|When you take the Attack action on your turn, you can forgo one of your attacks and use a bonus action to direct one of your companions to strike. When you do so, choose a friendly creature who can see or hear you and expend one superiority die. That creature can immediately use its reaction to make one weapon attack, adding the superiority die to the attack’s damage roll."
+-f "Martial Adept{{" (-1)" if v else ''}}|{{cc_str(cc)}}"
+
+!snippet disarm {{cc = "Martial Adept"}}
+{{v=cc_exists(cc) and get_cc(cc)}}
+-title "{{f"[name] {'attempts to disarm' if v else 'fails to disarm'} with [aname]!"}}"
+{{mod_cc(cc, -1) if v else ''}}
+{{DC = 8 + proficiencyBonus + dexterityMod}}
+{{'-d 1d6' if v else 'miss -phrase "but failed due to being out of Superiority Dice!"'}} 
+-f "**Disarming Attack**|When you hit a creature with a weapon attack, you can expend one superiority die to attempt to disarm the target, forcing it to drop one item of your choice that it’s holding. You add the superiority die to the attack’s damage roll, and the target must make a Strength saving throw. On a failed save, it drops the object you choose. The object lands at its feet."
+-f "Maneuver save DC| {{DC}}"
+-f "Martial Adept{{" (-1)" if v else ''}}|{{cc_str(cc)}}"
+
+!snippet distract embed
+{{cc = "Martial Adept"}}
+{{v=cc_exists(cc) and get_cc(cc)}}
+-title "{{f" [name] {'attempts to distract their opponent' if v else 'fails to distract their opponent'} with [aname]!"}}"
+{{mod_cc(cc, -1) if v else ''}}
+{{sDie = vroll("1d6")}}
+-f "Superiority Die|{{sDie}}"
+-f "Distracting Strike|When you take the Attack action on your turn, you can forgo one of your attacks and use a bonus action to direct one of your companions to strike. When you do so, choose a friendly creature who can see or hear you and expend one superiority die. That creature can immediately use its reaction to make one weapon attack, adding the superiority die to the attack’s damage roll."
+-f "Martial Adept{{" (-1)" if v else ''}}|{{cc_str(cc)}}"
+
+!alias evasive embed
+{{cc = "Martial Adept"}}
+{{v=cc_exists(cc) and get_cc(cc)}}
+-title " <name> uses their training in combat to take an evasive stance"
+{{mod_cc(cc, -1) if v else ''}}
+{{sDie = vroll("1d6")}}
+-f "Superiority Die|{{sDie}}"
+-f "Evasive AC|{{armor + sDie.total}}"
+-f "Evasive Footwork|When you move, you can expend one superiority die, rolling the die and adding the number rolled to your AC until you stop moving."
+-f "Martial Adept{{" (-1)" if v else ''}}|{{cc_str(cc)}}"
