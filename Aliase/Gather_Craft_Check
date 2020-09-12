@@ -15,7 +15,7 @@ Copy and paste the following into Avrae-test-channel, then hit enter.
 -title "Gathering and Scavenging (Sur)" -desc "<name> performs a Survival check to scavenge and gather resources for the camp of {{f" {target}"}}"
 -f {{"**Pass**" if  check.total >= 10 else "**Fail**"}}
 -f "<check>|Daily  Gathering Complete "
--footer "created by the minds of @""Tzexes#1344, @""Just_Jack1991#8746, and @""Jfinkiewicz#8354"
+-footer "created by the minds of many"
 -color #12a934
 -thumb https://www.artnet.com/WebServices/images/ll00360lldRYYGFgBZqEfDrCWvaHBOcySVC/samuel-bough-women-gathering-firewood-in-a-forest.jpg
 
