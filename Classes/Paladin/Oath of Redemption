@@ -13,17 +13,12 @@ Channel Divinity: Rebuke the Violent Alias:
 -color #00ddda -thumb <thumb>
 
 Channel Divinity: Emissary of Peace Alias:
-!alias EoP embed
-{{lvl=int(PaladinLevel)}}
-{{counter="Channel Divinity"}}
-{{mod_cc(counter, -1, True) if lvl else 0}}
-{{target="%1%" if "%1"+"%"!="%1%" else "themselves"}}
- -title "<name> becomes more Charismatic" 
- -desc "<name> presents their holy symbol, and a brief blue light surrounds them providing a +5 increase in Charisma (Persuasion) checks for the next 10 minutes."
-{{f'-f "Targets|{target}"' if target else "Themselves"}}
--f "{{counter}}|{{'◉'*get_cc(counter) + '〇'*(get_cc_max(counter)-get_cc(counter))}}"
--footer "Paladin | PHB 58-59"
--color #00ddda -thumb <thumb>
+!alias EoP check persuasion -b 5 {{mod_cc("Channel Divinity", -1, True)}} 
+-title "**<name> Looks deep for the insipration to act as an Emissary of Peace**"
+-phrase "<name> employs their persuasive nature to diffuse the situation"
+-f "Description: As a bonus action, you grant yourself a +5 bonus to Charisma (Persuasion) checks for the next 10 minutes."
+-f "Channel Divinity (-1)| {{cc_str("Channel Divinity")}}"
+-thumb https://img.huffingtonpost.com/asset/5c1225ae1f0000d40726a7df.jpeg?ops=scalefit_630_noupscale
 
 Channel Divinity: Emissary of Peace Snippet:
 !snippet EoP -b 5
