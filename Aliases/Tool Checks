@@ -11,3 +11,13 @@
 !alias carpentry check Str -b <proficiencyBonus> -title "Carpentry (Str)" -phrase "<name> performs a **carpentry** check." -f "Tool Proficiency|carpentry Tools" -thumb https://cdn.discordapp.com/attachments/730869447023263755/733458332836429864/Carpenter.jpg
 
 !alias leather check dex -b <proficiencyBonus> -title "Leatherworking (Dex)" -phrase "<name> performs a **Leatherworking** check." -f "Tool Proficiency|Leatherworker's Tools" -thumb http://johnwhalley.com/wp-content/uploads/2016/05/8-Trio.jpg
+
+!alias Mason check Str -b <proficiencyBonus> -title "Masonry (Str)" -phrase "<name> performs a Masonry check" -f "Tool Proficiency|Mason Tools"
+
+Without Proficiency Bonus
+
+!alias Brewing check wis -title "Brewing (Wis)" -phrase "<name> performs a **Brewer's Supplies** check" -f "Tool Proficiency|Brewer's Supplies (Not Proficient)" -thumb https://media.discordapp.net/attachments/723679830562046053/744005048983355463/Brewers.jpg
+
+!alias calligraphy check dex -title "Calligraphy (Dex)" -phrase "<name> performs a **Calligrapher's Supplies** check" -f "Tool Proficiency|Calligrapher's Supplies (Not Proficient)" -thumb https://media.discordapp.net/attachments/723679830562046053/744002498540601404/Caligrapher.jpg
+
+!alias glass check Intelligence -title "Glassblower's tools (Int)" -phrase "<name> begins working to manipulate the bead of molten glass, blowing and rolling the heated glass as needed to complete the piece." -f "Tool Proficiency|Glassblower's Tools (Not Proficient)" -thumb https://etc.usf.edu/clipart/87000/87090/87090_glass-blowing-and-stretching_lg.gif
