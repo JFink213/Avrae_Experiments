@@ -1,0 +1,8 @@
+!alias recover embed {{W,a,D=get("WizardLevel",0),&ARGS&,get("DruidLevel",0)}}{{cc=f"{'Arcane' if W else 'Natural'} Recovery"}}{{lvl=int(W or D)}}{{sl=[int(x) for x in a if x.isdigit() and int(x)<6] if a else ""}}{{total=sum(sl)}}{{v=cc_exists(cc) and get_cc(cc) and total<=ceil(lvl/2) and total}}
+-title "<name> {{"uses" if v else "tries to use"}} {{cc}} to Recover Spell Slots!" 
+-desc "{{f"You have learned to regain some of your magical energy by {'studying your spellbook' if W else 'by sitting in meditation and communing with nature'}. Once per day when you finish a short rest, you can choose expended spell slots to recover. The spell slots can have a combined level that is equal to or less than half your {'wizard' if W else 'druid'} level (rounded up), and none of the slots can be 6th level or higher." if v else "You must complete a long rest to regain use of this feature." if cc_exists(cc) and not get_cc(cc) else f"The number of slots exceeds the capacity of your {cc}: "+", ".join(sl) if sl and total>ceil(lvl/2) else "You must specify which slots to recover:\n !recover 5 4 4 3\nWould recover one 5th, two 4th, and one 3rd level slot " if not total else "You do not have this feature."}}"
+{{set_cc(cc,0) if v else ""}}
+{{[set_slots(int(x),get_slots(int(x))+1) for x in sl] if sl and v else ""}}
+-f "{{cc}}|{{cc_str(cc) if cc_exists(cc) else "None"}}" -color <color> 
+{{slots=[slots_str(x) for x in range(1,10) if get_slots_max(x)]}}
+{{'-f "Spell Slots|'+'\n'.join(slots)+'"' if slots else ""}}
