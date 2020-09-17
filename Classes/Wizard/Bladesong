@@ -1,0 +1,10 @@
+!alias bladesong embed 
+{{cc,c="Bladesong",combat()}}{{v=cc_exists(cc) and get_cc(cc)>0}}
+-title "<name> {{"invokes" if v else "tries to invoke"}} their Bladesong!"
+-desc "{{f"You gain a +{intelligenceMod} bonus to your AC, your walking speed increases by 10 feet, you have advantage on Dexterity (Acrobatics) checks, and you gain a +{intelligenceMod} bonus to any Constitution saving throws you make to maintain concentration on a spell." if v else "You must finish a short or long rest before you can use this ability again." if cc_exists(cc) else "You do not have this ability"}}"
+{{mod_cc(cc,-1) if v else ""}}-f "{{cc}}| {{(cc_str(cc) if cc_exists(cc) else "*None*")}}" 
+-color <color> 
+-thumb <image> 
+-f "AC|{{((c.me.ac if c.me.get_effect('Bladesong') else c.me.ac+intelligenceMod) if c and c.me else armor+intelligenceMod) if v else (combat().me.ac if c and c.me else armor)}}"
+{{c.me.add_effect('Bladesong',f"-ac +{intelligenceMod}",10) if v and c and c.me else ''}}
+
