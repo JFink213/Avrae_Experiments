@@ -13,12 +13,12 @@
 
 !alias VBless embed
 {{target="%1%" if "%1"+"%"!="%1%" else "Themselves"}}
- -title "<name> gives a blessing {{f" To {target}" if target else "themselves"}}!"
+ -title "<name> gives the blessing of vigilance to {{f" To {target}" if target else "themselves"}}!"
  -color 8a496b
- -thumb <image>
+ -thumb https://blissphotographics.com/wp-content/uploads/2020/01/CatsEyesNightSmall123019D.jpg
  -desc "The night has taught you to be vigilant. As an action, you give one creature you touch (including possibly yourself) advantage on the next initiative roll the creature makes. This benefit ends immediately after the roll or if you use this feature again"
 {{f'-f "Targets|{target}"' if target else "Themselves"}}
--footer "{{"Cleric | PHB 58-59"}}" | "Made by @""Jfinkiewicz#8354"
+-footer "Cleric| Twilight Domain (UA) | UA "|"Made by @""Jfinkiewicz#8354"
 
 !snippet VBless adv "[Vigilant Blessing]"
 
