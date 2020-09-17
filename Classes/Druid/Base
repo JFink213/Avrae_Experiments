@@ -2,3 +2,13 @@
 {{mod_cc(q,-m) if v and m>0 else ""}}{{f'!embed -title "{name} {"transforms into a "+F.n if v else "tries to transform"}{" with Elemental Wild Shape" if m>1 else ""}!" {f} -desc "{"" if v else "You do not have this ability" if not cc_exists(q) else G[2] if not a else G[3]}" -f "{q}|{cc_str(q) if cc_exists(q) else "*None*"}" -thumb {image} -color {color}' if m>0 else f'!embed {f} -title "{name} ends their Wild Shape" -f "Damage Transfered|{dt}" -thumb {image} -color {color}' if m==0 else ""}}
 {{f'!i opt "{name}" -group "{name+" (Wild Shape)"}"\n!i madd "{F.n}" -name "{F.n} ({name})" -h -group "{name+" (Wild Shape)"}" -ac {max(F.ac,10+F.dex+max(wisdomMod if get("MonkLevel") else 0,F.con if get("BarbarianLevel") else 0))}'+(f'\n!i opt "{F.n} ({name})" -resist '+" -resist ".join([r for r in get_raw().resist if (not r in F.resist) and (not r in F.immune)]) if get_raw().resist else '') if v and m>0 and c else  ""}}
 {{f'!i remove {cf}\n!i opt "{name}" -group None\n!i hp "{name}" -{dt}' if m==0 and c and cf else ""}}
+
+
+!alias recover embed {{W,a,D=get("WizardLevel",0),&ARGS&,get("DruidLevel",0)}}{{cc=f"{'Arcane' if W else 'Natural'} Recovery"}}{{lvl=int(W or D)}}{{sl=[int(x) for x in a if x.isdigit() and int(x)<6] if a else ""}}{{total=sum(sl)}}{{v=cc_exists(cc) and get_cc(cc) and total<=ceil(lvl/2) and total}}
+-title "<name> {{"uses" if v else "tries to use"}} {{cc}} to Recover Spell Slots!" 
+-desc "{{f"You have learned to regain some of your magical energy by {'studying your spellbook' if W else 'by sitting in meditation and communing with nature'}. Once per day when you finish a short rest, you can choose expended spell slots to recover. The spell slots can have a combined level that is equal to or less than half your {'wizard' if W else 'druid'} level (rounded up), and none of the slots can be 6th level or higher." if v else "You must complete a long rest to regain use of this feature." if cc_exists(cc) and not get_cc(cc) else f"The number of slots exceeds the capacity of your {cc}: "+", ".join(sl) if sl and total>ceil(lvl/2) else "You must specify which slots to recover:\n !recover 5 4 4 3\nWould recover one 5th, two 4th, and one 3rd level slot " if not total else "You do not have this feature."}}"
+{{set_cc(cc,0) if v else ""}}
+{{[set_slots(int(x),get_slots(int(x))+1) for x in sl] if sl and v else ""}}
+-f "{{cc}}|{{cc_str(cc) if cc_exists(cc) else "None"}}" -color <color> 
+{{slots=[slots_str(x) for x in range(1,10) if get_slots_max(x)]}}
+{{'-f "Spell Slots|'+'\n'.join(slots)+'"' if slots else ""}}
