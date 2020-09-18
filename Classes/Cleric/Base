@@ -13,17 +13,27 @@
 !snippet guidance -b 1d4 -f "Guidance|You can roll a d4 and add the number rolled to one ability check of your choice."
 
 
-!alias TurnUndead embed
+!alias turnUndead embed
 {{useCleric=exists("ClericLevel")}}
 {{lvl=int(ClericLevel) if useCleric else int(PaladinLevel)}}
-{{cc="Channel Divinity"}}
-{{counter = cc }}
-{{mod_cc(cc, -1, True) if lvl else 0}}
--title "<name> Uses {{cc}}: Turn Undead."
+{{counter = "Channel Divinity"}}
+{{mod_cc(counter, -1, True) if lvl else 0}}
+-title "<name> Uses {{counter}}: Turn Undead."
 -desc "As an action, you present your holy symbol and speak a prayer censuring fiends and undead, using your Channel Divinity. Each fiend or undead that can see or hear you within 30 feet of you must make a Wisdom saving throw. If the creature fails its saving throw, it is turned for 1 minute or until it takes damage.
 
-A turned creature must spend its turns trying to move as far away from you as it can, and it can’t willingly move to a space within 30 feet of you. It also can’t take reactions. For its action, it can use only the Dash action or try to escape from an effect that prevents it from moving. If there’s nowhere to move, the creature can use the Dodge action."
+A turned creature must spend its turns trying to move as far away from you as it can, and it can’t willingly move to a space within 30 feet of you. It also can’t take reactions. For its action, it can use only the Dash action or try to escape from an effect that prevents it from moving. If there’s nowhere to move, the creature can use the Dodge action.
+
+Starting at 5th level, when an undead fails its saving throw against your Turn Undead feature, the creature is instantly destroyed if its challenge rating is at or below a certain threshold, as shown in the Destroy Undead table.
+
+**Destroy Undead Table**
+Cleric Level |  Destroys Undead of CR...
+ -------------|----------------------------
+     5th          |  1/2 or lower
+     8th          |  1 or lower
+     11th         |  2 or lower
+    14th         |  3 or lower
+    17th         |  4 or lower"
 -f "WIS DC|{{get_raw().spellbook.dc}}"
 -f "{{counter}}|{{'◉'*get_cc(counter) + '〇'*(get_cc_max(counter)-get_cc(counter))}}"
 -footer "{{"Cleric | 58-59" if useCleric else "Paladin | 85"}}" 
--color 8a496b -thumb <image>
+-color ffc100 -thumb <image>
