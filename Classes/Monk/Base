@@ -39,3 +39,31 @@
  -desc "You can spend 1 ki point to take the Disengage or Dash action as a bonus action on your turn, and your jump distance is doubled for the turn." 
 -f "{{counter}}|{{'◉'*get_cc(counter) + '〇'*(get_cc_max(counter)-get_cc(counter))}}"
  -footer "Monk | PHB 78" -color <color> -thumb <image>
+
+!alias aparry embed 
+{{c=combat()}} 
+-title "<name> prepares to parry" 
+-desc "If you make an unarmed strike as part of the Attack action on your turn and are holding a kensei weapon, you can use it to defend yourself if it is a melee weapon. You gain a +2 bonus to AC until the start of your next turn, while the weapon is in your hand and you aren't incapacitated." 
+-color <color>
+-thumb <image> 
+{{c.me.add_effect('Agile parry',f"-ac +2",1) if c else ''}}
+
+!alias monkStun embed
+{{a,c=argparse(&ARGS&), combat()}}
+{{cc="Ki Points"}} 
+{{v=cc_exists(cc) and get_cc(cc)}}
+{{target=a.last("t")}}
+{{combatant=c.get_combatant(target)}}
+{{dc=8+proficiencyBonus+wisdomMod}}
+{{cs = combatant.save("con").result}}
+{{value= combatant.save("con").total}}
+{{c.get_combatant(target).add_effect("Stunned","",2) if value<=dc else ''}} 
+-title "{{f"{name} {'uses' if v else 'tries to use'} Stunning Strike!"}}"
+-desc "{{"you can interfere with the flow of ki in an opponent’s body. When you hit another creature with a melee weapon attack, you can spend 1 ki point to attempt a stunning strike. The target must succeed on a Constitution saving throw or be stunned until the end of your next turn."}}" 
+{{mod_cc(cc, -1) if v  else ""}}
+-f "{{f" Con Save|{cs}"}}"
+-f "{{f" Con Save DC|{dc}"}}"
+-f "{{f"{cc}|{cc_str(cc) if cc_exists(cc) else 'None'}"}}"
+-color <color>
+-image <thumb> 
+-footer "Monk | PHB 78 | [-t target] | Modified by @""Jfinkiewicz#8354"
