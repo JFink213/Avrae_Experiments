@@ -1,0 +1,10 @@
+!snippet fighterDisarm {{cc = "Superiority Dice"}}
+{{v=cc_exists(cc) and get_cc(cc)}}
+-title "{{f"[name] {'attempts to disarm' if v else 'fails to disarm'} with [aname]!"}}"
+{{mod_cc(cc, -1) if v else ''}}
+{{DC = 8 + proficiencyBonus + max(strengthMod, dexterityMod)}}
+{{'-d 1d8' if v else 'miss -phrase "but failed due to being out of Superiority Dice!"'}} 
+-f "**Disarming Attack**|When you hit a creature with a weapon attack, you can expend one superiority die to attempt to disarm the target, forcing it to drop one item of your choice that it’s holding. You add the superiority die to the attack’s damage roll, and the target must make a Strength saving throw. On a failed save, it drops the object you choose. The object lands at its feet."
+-f "Maneuver save DC| {{DC}}"
+-f "Superiority Dice{{" (-1)" if v else ''}}|{{cc_str(cc)}}"
+
