@@ -5,3 +5,25 @@
 {{f'-f "Undamaged | {vroll(z)}"\n-f "Damaged | {vroll(Z)}"' if not o else o}}
 {{f'-footer "{t.name}: {t.hp_str()}"' if t else None}}
 
+
+!alias gfb embed
+{{a,c,  = argparse(&ARGS&), combat()}}
+{{d,e = "&1&", "&2&"}}
+{{target1= c.get_combatant(d)}}
+{{target2= c.get_combatant(e)}}
+-title "<name> Green-Flame Blade"
+-desc "As part of your melee attack hit with a weapon against one creature within the spell’s range a green fire leaps from the target to a different creature of your choice that you can see within 5 feet of it. The second creature takes fire damage equal to your spellcasting ability modifier.
+
+This spell’s damage increases when you reach higher levels. At 5th level, the melee attack deals an extra 1d8 fire damage to the target, and the fire damage to the second creature increases to 1d8 + your spellcasting ability modifier. Both damage rolls increase by 1d8 at 11th level and 17th level."
+{{aroll = str((("1" if level<11 else "2" if level<17 else "3") +"d8" if level>=5 else "0" ))}}
+{{sroll = str((("1" if level<11 else "2" if level<17 else "3") +"d8 + " if level>=5 else "") +str(spell))}}
+{{target1.damage(aroll).damage if target1 else "no target selected"}}
+{{target2.damage(sroll).damage if target2 else "no target selected"}}
+{{d1 = target1.damage(aroll).damage if target1 else "no target selected"}}
+{{d2 = target2.damage(sroll).damage if target2 else "no target selected"}}
+{{f'-f "{target1.name} | {d1}"' if target1 else "Meta"}}
+{{f'-f "{target2.name} | {d2}"' if target2 else "Meta"}}
+-f "{{target1}}"
+-f "{{target2}}"
+-color 016302
+-thumb <image>
