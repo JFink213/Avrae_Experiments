@@ -1,0 +1,15 @@
+!alias silver embed
+{{a = roll("1d20")}}
+{{b=  roll("1d20")}}
+{{c= a if a >=10 else 10 }}
+{{d= b if b >=10 else 10 }}
+{{e = c + get_raw().skills.persuasion}}
+{{f = d + get_raw().skills.deception}}
+
+-title "<name> uses Silver Tongue"
+
+-f "You are a master at saying the right thing at the right time. When you make a Charisma (Persuasion) or Charisma (Deception) check, you can treat a d20 roll of 9 or lower as a 10.
+
+Persuasion check: {{e}}
+
+Deception check: {{f}}"
