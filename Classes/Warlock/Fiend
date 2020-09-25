@@ -1,0 +1,15 @@
+Dark One's Blessing
+!alias DOB embed
+{{lvl =int(WarlockLevel)}}
+{{target="%1%" if "%1"+"%"!="%1%" else "themselves"}}
+{{heal = charismaMod + WarlockLevel}}
+{{set_temphp(heal)}}
+ -title "<name> extracts some of the fallen's life force!" 
+ -color 8a496b
+ -thumb <image>
+ -desc "Starting at 1st level, when you reduce a hostile creature to 0 hit points, you gain temporary hit points equal to your Charisma modifier + your warlock level (minimum of 1)."
+-f "Provided|{{str(heal)}}"
+-f "Current HP|{{get_hp()}}/{{hp}}"
+-f "Current Temp HP|{{get_temphp()}}"
+{{f'-f "Targets|{target}"' if target else "Themselves"}}
+ -footer "Warlock Class Feature | BR 109"
