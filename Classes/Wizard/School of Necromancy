@@ -1,0 +1,18 @@
+!alias Grim embed 
+{{W,a,  = get("WizardLevel", 0), argparse(&ARGS&)}}
+{{wclass = int(W) > 2}}
+{{amt = int("&1&")}}
+-title "Grim Harvest!"
+-color 000000
+-thumb <image>
+{{mod_hp(amt, overflow=False)}}
+{{f'-title "{name} heals using {-amt} points of Grim Harvest!"'}}
+
+-desc "School of Necromancy: Grim Harvest
+
+At 2nd level, you gain the ability to reap life energy from creatures you kill with your spells. Once per turn when you kill one or more creatures with a spell of 1st level or higher, you regain hit points equal to twice the spells level, or three times its level if the spell belongs to the School of Necromancy. You dont gain this benefit for killing constructs or undead." 
+
+-f "Provided|{{str(amt)}}"
+-f "Current HP|{{get_hp()}}/{{hp}}"
+-f "Wizard Level| {{W}}"
+-footer "Class Feature | PHB 118"
