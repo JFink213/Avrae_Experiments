@@ -1,16 +1,28 @@
 
 Channel Divinity: Rebuke the Violent Alias:
 !alias RtV embed
-{{lvl=int(PaladinLevel)}}
+{{P,a,c  = get("PaladinLevel",0), argparse(&ARGS&), combat()}}
+{{lvl=int(P)}}
+{{amt = int("&2&")}}
 {{counter="Channel Divinity"}}
 {{mod_cc(counter, -1, True) if lvl else 0}}
 {{target="%1%" if "%1"+"%"!="%1%" else "themselves"}}
- -title "<name> rebukes the violence of {{f" to {target}" if target else "themselves"}}!" 
+{{combatant=c.get_combatant(target)}}
+{{cs = combatant.save("wis").result}}
+{{value= cs.total}}
+{{dc=8+proficiencyBonus+charismaMod}}
+{{ amt = amt if value<=dc else (amt/2)}}
+{{combatant.damage(str(amt)).damage}}
+{{droll = combatant.damage(str(amt)).damage}}
+ -title "<name> rebukes the violence caused {{f" by {target} back at it" if target else "themselves"}}!" 
  -desc "<name> presents their holy symbol, and a concentrated blue light blasts the attacker from the heavens above. You use your reaction to force the attacker to make a Wisdom saving throw. On a failed save, the attacker takes radiant damage equal to the damage it just dealt. On a successful save, it takes half as much damage."
-{{f'-f "Targets|{target}"' if target else "Themselves"}}
+-f "{{f" Con Save|{cs}"}}"
+-f "{{f" Con Save DC|{dc}"}}"
+{{f'-f "{combatant.name} | {droll}"' if target else "Meta"}}
 -f "{{counter}}|{{'◉'*get_cc(counter) + '〇'*(get_cc_max(counter)-get_cc(counter))}}"
+-f "{{combatant}}"
 -footer "Paladin | PHB 58-59"
--color #00ddda -thumb <thumb>
+-color 00ddda -thumb <thumb>
 
 Channel Divinity: Emissary of Peace Alias:
 !alias EoP check persuasion -b 5 {{mod_cc("Channel Divinity", -1, True)}} 
