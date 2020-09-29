@@ -1,21 +1,36 @@
-As an action, you present your holy symbol and evoke healing energy that can restore a number of hit points equal to five times your cleric level. Choose any creatures within 30 feet of you, and divide those hit points among them. This feature can restore a creature to no more than half of its hit point maximum. You can’t use this feature on an undead or a construct.
- 
+Preserve Life Alias:
+!alias preserveLife embed 
+# get combatants that are specified in targeting.
+{{a,c,  = argparse(&ARGS&), combat()}}
+{{targets=a.get('t')}}
+{{combatants=[c.get_combatant(x) for x in targets] if c else []}}
 
-!alias Preserve embed {{P,a,c,  = get("ClericLevel",0), argparse(&ARGS&), combat()}}
-{{amt = int(P*5)}}
-{{target = a.last("t")}}
-{{target, combatant= c.get_combatant(target) if c and target else None, target if target else "themselves"}}
+
+# Obtaining class level
+{{P = get("ClericLevel", 0)}}
+
+# set and burn a channel divinity token if it exists.
 {{cc = "Channel Divinity"}}
 {{v = cc_exists(cc) and get_cc(cc)}}
-{{mod_cc(cc, -1, True) if P else 0}}
+{{mod_cc(cc, -1, True) if P>2  else 0}} # TODO: add if not targeting to not burn token.
+
+# define the healing amount and provide to the combatants.
+{{healAmt = floor(int(P*5)/len(combatants)) if targets else int(P*5)}}
+{{heal = combatants[0].mod_hp(healAmt, False) }}
+{{[x.mod_hp(healAmt, False) for x in combatants if x is not None]}}
+
+# auxiliary information.
 -title "Channel Divinity: Preserve Life!"
+{{ f' -desc "{name} heals for {healAmt} hit points!" ' }}
+-f "As an action, you present your holy symbol and evoke healing energy that can restore a number of hit points equal to five times your cleric level. Choose any creatures within 30 feet of you, and divide those hit points among them. This feature can restore a creature to no more than half of its hit point maximum. You can’t use this feature on an undead or a construct."
+-f "Targeted:|{{ '\n'.join([x.name for x in combatants]) or c.me.name if c else 'This channel is not in combat.' }}"
+-f "{{cc}}|{{'◉'*get_cc(cc) + '〇'*(get_cc_max(cc)-get_cc(cc))}}"
+-footer "{{'\n'.join([str(x) for x in combatants])}}"
+
 -color f8f8ff
 -thumb <image>
-{{f'-desc "{name} heals {amt} to {target.name if target else "themselves"}!" '}}
--f "{{cc}}|{{'◉'*get_cc(cc) + '〇'*(get_cc_max(cc)-get_cc(cc))}}"
--footer "{{f"{target}\n" if target else ""}} [-t target] | Made by @""Jfinkiewicz#8354"
 
-
+Lifecast Alias (Avaliable on Avrae Discord):
 !alias lifecast {{a,c=&ARGS&,combat()}}{{H=not a or 'help' in a or '?' in a}}{{'embed' if H else  'cast'}} %1% -l &2& -d -(2+&2&) 
 {{H or (f'max -f "Supreme Healing|When you would normally roll one or more dice to restore hit points with a spell, you instead use the highest number possible for each die."' if int(get('ClericLevel',0))>16 else '')}}
 {{' '.join([(f'"{i}"' if ' ' in i else i) for i in &ARGS&[2:]])}}
