@@ -24,6 +24,7 @@ Channel Divinity: Rebuke the Violent Alias:
 -footer "Paladin | PHB 58-59"
 -color 00ddda -thumb <thumb>
 
+
 Channel Divinity: Emissary of Peace Alias:
 !alias EoP check persuasion -b 5 {{mod_cc("Channel Divinity", -1, True)}} 
 -title "**<name> Looks deep for the insipration to act as an Emissary of Peace**"
