@@ -1,0 +1,20 @@
+!alias useAlcFire embed
+{{cc = "Alchemists Fire"}}
+{{(create_cc(cc, 0),set_cc(cc, 1)) if not cc_exists(cc) else ''}}
+{{v=cc_exists(cc) and get_cc(cc)}}
+{{mod_cc(cc, -1) if v else ''}}
+{{a,c  = argparse(&ARGS&), combat()}}
+{{target = a.last("t")}}
+{{combatant =c.get_combatant(target)}}
+{{h = vroll("1d20+" + str(dexterityMod))}}
+{{armor = combatant.ac }}
+{{ g =  h.total >= armor}}
+-title "{{f"{name} {'throws a flask of alchemists fire that shatters upon hitting; shattering and coating the target with flames' if g and v  else 'Failed to hit the target'} "}}"
+{{ d = "1d4[fire]"}}
+-f  "{{f" To Hit| {h} "}}"
+{{droll = combatant.damage(d).damage if g and v else "Failed to hit the target!"}}
+-f "{{f"{droll}"}}"
+-f " Alchemists Fire{{" (-1)" if v else ''}}|{{cc_str(cc)}}"
+-f "Alchemists Fire|This sticky, adhesive fluid ignites when exposed to air. As an action, you can throw this flask up to 20 feet, shattering it on impact. Make a ranged attack against a creature or object, treating the alchemist's fire as an improvised weapon. On a hit, the target takes 1d4 fire damage at the start of each of its turns. A creature can end this damage by using its action to make a DC 10 Dexterity check to extinguish the flames"
+-f "{{f" {combatant}" }}"
+-footer "Item BR"
