@@ -1,0 +1,22 @@
+!alias font embed 
+{{level = %1% }}
+{{counter="Sorcery Points"}}
+{{point =6 if level ==4 else ""}}
+{{point =5 if level ==3 else ""}}
+{{point =3 if level ==2 else ""}}
+{{point =2 if level ==1 else ""}}
+{{Message=""}}
+{{slots = get_cc(counter)}}
+{{ Message ="Spell slots already full. " if get_slots(level ) == get_slots_max(level ) else ""}}
+{{ Message +="Not enough Sorcery Points left" if (slots) < (level+1) else ""}}
+{{mod_cc(counter, -(level+1), True)  if len(Message)<2 else ""}}
+{{set_slots(level, get_slots(level) +1)  if len(Message)<2 else ""}}
+-title "<name> uses their Sorcery Points| Bonus Action" 
+{{f'  -desc  "{name} transforms unexpended sorcery points into spell slots as a bonus action." ' if len(Message)<2 else Message }}
+-color <color>
+-thumb <thumb>
+-f "Converts sorcery points to a spell slot"
+-f "{{"Spell Slots (+1)" if len(Message)<2 else "Spell Slots"}}| {{slots_str(level) }}"
+-f "{{counter + " (-" + str(level+1) + ")" if len(Message)<2 else counter}}|{{'◉'* get_cc(counter) + '〇' *(get_cc_max(counter)-get_cc(counter))}}"
+-f "**Current Issues:** Above lvl 2 does not take appropriate Sorcery Points"
+-footer "Made by @''Betsy(hawthystuff)#4453 with slightest modifications by @""Jfinkiewicz#8354"
