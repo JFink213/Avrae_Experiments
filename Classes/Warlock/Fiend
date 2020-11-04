@@ -12,4 +12,4 @@ Dark One's Blessing
 -f "Current HP|{{get_hp()}}/{{hp}}"
 -f "Current Temp HP|{{get_temphp()}}"
 {{f'-f "Targets|{target}"' if target else "Themselves"}}
- -footer "Warlock Class Feature | BR 109"
+ -footer "{{"Warlock Class Feature | BR 109"}}" |"Made by @""Jfinkiewicz#8354"
