@@ -7,7 +7,6 @@
 -desc "Your eyes are blessed, allowing you to see through the deepest gloom. You have darkvision with no maximum range; you can see in dim light as if it were bright light and in darkness as if it were dim light. You can magically give the benefit of darkvision with no maximum range to any number of creatures you can see within 10 feet of you. The shared benefit lasts for 10 minutes."
 -f "{{counter}}|{{'◉'*get_cc(counter) + '〇'*(get_cc_max(counter)-get_cc(counter))}}"
 -footer "{{"Cleric | 58-59" if useCleric else "Paladin | 85"}}" | "Made by @""Jfinkiewicz#8354"
-
 -color 8a496b -thumb <image>
 
 
