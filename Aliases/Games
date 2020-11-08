@@ -1,0 +1,7 @@
+!alias 2dice embed
+{{a, b = roll("1d6"), roll("1d6")}}
+{{a1  = "9" if (a == 1) else "10" if (a == 2) else "J" if (a == 3) else "Q" if (a == 4) else "K" if (a == 5) else "A"}}} 
+{{b1  = "9" if (b == 1) else "10" if (b == 2) else "J" if (b == 3) else "Q" if (b == 4) else "K" if (b == 5) else "A"}}}
+-title "<name> shakes the dice cup and slam it on the table: "
+-desc " "||" {{a1}}, {{b1}} "||" "
+-color <color> -thumb <image>
