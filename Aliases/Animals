@@ -4,3 +4,10 @@
 
 !alias pig embed -title "Boromir" -desc "snuffle snuffle snort a little brown pigglet dressed like a pirate noses and sniffs through anything that might have a treat. But when it notices that it’s being watched **sqeeeeeal** darts off in the other direction a little blur." -color 8d754f -thumb <https://media.discordapp.net/attachments/730869447023263755/732335011025649744/image0.png>
 
+!alias goats embed -title "Goat Keeping (Animal Handling)" -desc "<name> checks on the goats, milks the nannies if needed, and tends to their needs. Takes them out to a vegetated area around camp to browse on roughage a while before bringing them back to the pen. Cleans and trims their hooves and brushes them, collecting loose mohair. Sweeps out their shelter, adds new bedding, and tops up their feed and water troughs. Does the milking last and immediately stores the milk in the supply tent." 
+{{ahm = get_raw().skills.animalHandling}}
+{{ah = vroll("1d20")}}
+-f "Animal Handling|{{ah.total + ahm}}"
+-image https://media.discordapp.net/attachments/730869447023263755/751348049628102666/61FFB4zpvsL.png
+
+!alias hens check animal -title "Tending the Chickens (Animal Handling)" -phrase "<name> Checks on the hens to see if any are missing, injured, or sick. Digs and uncovers worms, slugs, spiders, and other bugs for them to snack. Makes 'happy/feeding' clucks so they feel comfortable. Helps with any loose feathers, trims beak or talons as needed. Sprinkles mix of wild grains, crumbs, and crushed shell in a small pile, cleans and refills water dish. Searches and collects any eggs present." -image <image> -color <color>
