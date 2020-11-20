@@ -1,0 +1,28 @@
+!alias bard embed {{g,c,a=load_json(get_gvar("fda09aac-d364-45d6-999d-eb1723f10dbd")),combat(),"&*&".lower().split(' ')}}{{l,q,L,A,b,e,h,F=g.l,g.q,g.L,g.a,int(BardLevel)if exists(g.b)else level,exists(g.S),charismaMod,[x for x in g.A if a[0]and a[0]in x.N.lower()]}}{{j,k,J,F=b>4,b>9,b>14,F[0]if F else''}}{{d,n,Ç,C,m=["1d"+str(6+2*j+2*k+2*J),str(2+j+2*k+3*J)+"d6","1d6",5+3*j+3*k+3*J],F.N if F else'',F.cc if'cc'in F else F.N if F else'',g.c in a,g.M in a}}{{a.remove(a[0]),a.remove(g.c)if C else'',a.remove(g.M)if m else''}}{{P,t,V='yc'in n,[c.get_combatant(x)for x in a if c and a],cc_exists(Ç)and((F.a if F else L)in(subclass if e else''))}}{{m,U,M,I,E,W,H,z=m and b>13 and not P,t[0]if t else'','f M'in n,'f I'in n,'E'in n,'Wh'in n,'F'in n,'di'in n}}{{v,i,N,T=V and get_cc(Ç)if F else 0,P+2*m+3*I,'ef'in n or'j'in n or z,U.name if U else a[0].title()if a else g.t}}{{mod_cc(Ç,-1)if v and not m else''}}{{r,S,B,D=vroll(d[min(i,2)],1+C),8+proficiencyBonus+h,E or W,P or H}}{{R,p=r.total,str(d[i])}}{{s,Z=[x.save("wis")for x in t if t and x],B or'Sh'in n or'f T'in n or M}}{{u=[x.total>S for x in s]if s and Z else[x.set_thp(d[i])for x in t if I]}}{{o=[g.f+t[x].name+F.T+(str(s[x])+F.s[u[x]]if Z else t[x].damage(str(R)+F.z).damage if D else' +'+p)+q for x in range(min(h,len(t))if B or I else len(t)if'Sl'in n else 1)] if(Z or D or I)and t and v else''}}{{Y,X={"#":h,A:p,"%":r,"&":armor+R,L:T,"Þ":S,"þ":R+5,"ß":g.C*C},g.o+color+g.u+image+g.i+(name+(g.s[v>0])+n+F.t.replace(L,T)if F else g.B)+g.d+(((F.m if m and D else F.d)+(l+l.join([x.name+': '+x.hp_str() for x in t])if D else'')if v else F.r.replace("Ý",g.r if j else"")if V else g.n)if F else get_gvar(g.g))+q}}{{[set("X",X.replace(x,str(Y[x])))for x in Y]}}{{X}}{{''.join(o) if o else''}}{{g.F+Ç+l+cc_str(Ç)+q if Ç else''}}{{Q=t[0]if t and z else c and c.me}}{{Q.add_effect((F.I.replace("ÿ",name).replace(A,p)if z else n),F.E+str(R)*('ef'in n),int(F.U))if c and N and v and(Q!=c.me if z else 1)else''}}
+
+!alias inspire embed
+{{lvl=int(BardLevel)}}
+{{counter="Bardic Inspiration"}}
+{{die="d12" if lvl>=15 else "d10" if lvl>=10 else "d8" if lvl>=5 else "d6"}}
+{{target="%1%" if "%1"+"%"!="%1%" else ""}}
+{{total="charismaMod" if charismaMod>=1 else "1"}}
+{{mod_cc(counter, -1, True)}}
+-title "<name> Grants Inspiration{{f" To {target}" if target else ""}}!"
+-desc "You can use a bonus action on your turn to choose one creature other than yourself within 60 feet of you who can hear you. That creature gains one Bardic Inspiration die, a {{die}}.
+
+Once within the next 10 minutes, the creature can roll the die and add the number rolled to one ability check, attack roll, or saving throw it makes. The creature can wait until after it rolls the d20 before deciding to use the Bardic Inspiration die, but must decide before the DM says whether the roll succeeds or fails. Once the Bardic Inspiration die is rolled, it is lost. A creature can have only one Bardic Inspiration die at a time.
+
+You can use this feature {{get_cc_max(counter)}} times. You regain any expended uses when you finish a long rest. Your Bardic Inspiration die changes when you reach certain levels in this class. The die becomes a d8 at 5th level, a d10 at 10th level, and a d12 at 15th level."
+-f "Inspiration Die|{{die}}"
+-f "{{counter}}|{{'◉'*get_cc(counter) + '〇'*(get_cc_max(counter)-get_cc(counter))}}"
+{{f'-f "Targets|{target}"' if target else ""}}
+-footer "Bard | PHB 53-54"
+-color <color> -thumb <image>
+
+!snippet Bard1 -b "1d6 [Inspiration]" -f "Bardic Inspiration|Once within the next 10 minutes, the creature can roll the die and add the number rolled to one ability check, attack roll, or saving throw it makes. The creature can wait until after it rolls the d20 before deciding to use the Bardic Inspiration die, but must decide before the DM says whether the roll succeeds or fails. Once the Bardic Inspiration die is rolled, it is lost. A creature can have only one Bardic Inspiration die at a time."
+
+!snippet Bard2 -b "1d8 [Inspiration]" -f "Bardic Inspiration|Once within the next 10 minutes, the creature can roll the die and add the number rolled to one ability check, attack roll, or saving throw it makes. The creature can wait until after it rolls the d20 before deciding to use the Bardic Inspiration die, but must decide before the DM says whether the roll succeeds or fails. Once the Bardic Inspiration die is rolled, it is lost. A creature can have only one Bardic Inspiration die at a time."
+
+!snippet Bard3 -b "1d10 [Inspiration]" -f "Bardic Inspiration|Once within the next 10 minutes, the creature can roll the die and add the number rolled to one ability check, attack roll, or saving throw it makes. The creature can wait until after it rolls the d20 before deciding to use the Bardic Inspiration die, but must decide before the DM says whether the roll succeeds or fails. Once the Bardic Inspiration die is rolled, it is lost. A creature can have only one Bardic Inspiration die at a time."
+
+!snippet Bard4 -b "1d12 [Inspiration]" -f "Bardic Inspiration|Once within the next 10 minutes, the creature can roll the die and add the number rolled to one ability check, attack roll, or saving throw it makes. The creature can wait until after it rolls the d20 before deciding to use the Bardic Inspiration die, but must decide before the DM says whether the roll succeeds or fails. Once the Bardic Inspiration die is rolled, it is lost. A creature can have only one Bardic Inspiration die at a time."
