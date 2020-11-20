@@ -94,3 +94,10 @@ The force damage increases to 4d6 when you reach 18th level in this class."
 -f "Arcane Shot{{" (-1)" if v else ''}}|{{cc_str(cc)}}"
 -f "{{f" {combatant}" }}"
 -footer "Fighter Arcane Archer Feature | XGtE 28"
+
+Arcane Shot - Querry's Acrane Shots
+!alias arcaneshot embed {{set("x", "Arcane Shot")}}{{set("shot", "FIZZLE" if get_cc(x)==0 else "Banishing Arrow" if str("%1%")=="banishing" else "Beguiling Arrow" if str("%1%")=="beguiling" else "Bursting Arrow" if str("%1%")=="bursting" else "Enfeebling" if str("%1%")=="enfeebling" else "Grasping" if str("%1%")=="grasping" else "Piercing" if str("%1%")=="piercing" else "Seeking" if str("%1%")=="seeking" else "Shadow" if str("%1%")=="shadow" else "Uuuuh")}}
+-title "<name> transforms that last shot into an Arcane Shot: {{shot}}"
+{{"-desc "Unfortunately, they dont have any charges of Arcane Shot left until they take a rest"" if shot=="FIZZLE" else str("-desc "You didnt specify a type, dummy.\n\n!arcaneshot banishing for Banishing Arrow, or \n!arcaneshot beguiling for Beguiling Arrow, or \n!arcaneshot bursting for Bursting Arrow, or \n!arcaneshot enfeebling for Enfeebling Arrow, or \n!arcaneshot grasping for Grasping Arrow, or \n!arcaneshot piercing for Piercing Arrow, or \n!arcaneshot seeking for Seeking Arrow, or \n!arcaneshot shadow for Shadow Arrow."") if shot=="Uuuuh" else %1%arrow}}
+{{"" if shot=="Uuuuh" or shot=="FIZZLE" else mod_cc(x, -1)}}
+-f "Arcane Shots | {{get_cc(x)}}/2"
