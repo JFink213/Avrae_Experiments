@@ -1,0 +1,5 @@
+!alias fod tembed {{cc="Form of Dread - Transformation"}} {{v=cc_exists(cc) and get_cc(cc)}} {{mod_cc(cc, -1) if v else ""}} {{die=vroll("1d10+6")}} 
+-title "<name> transforms into their Dread Form" 
+-f "You transform for 1 minute gaining the following benefits while transformed • You gain temporary hit points equal to 1d10 + 6. • Once during each of your turns, when you hit a creature with an attack, it to makes a DC14 Wisdom saving throw. If the saving throw fails, it is frightened of you until the end of your next turn. • You are immune to the frightened condition."
+-f "{{cc}}|{{cc_str(cc) if cc_exists(cc) else "None"}}" {{set_temphp(die.total)}} -color <color> -thumb <image>
+-f "{{name}}|{{hp_str()}}"
