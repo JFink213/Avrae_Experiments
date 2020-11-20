@@ -1,7 +1,138 @@
+Liar's Dice:
+!alias dice1 embed
+{{a = roll("1d6")}}
+-title "<name> shakes the dice and slams the cup on the table:"
+-desc " "||" {{a}} "||" "
+-color <color> -thumb <image>
+
 !alias 2dice embed
 {{a, b = roll("1d6"), roll("1d6")}}
 {{a1  = "9" if (a == 1) else "10" if (a == 2) else "J" if (a == 3) else "Q" if (a == 4) else "K" if (a == 5) else "A"}}} 
 {{b1  = "9" if (b == 1) else "10" if (b == 2) else "J" if (b == 3) else "Q" if (b == 4) else "K" if (b == 5) else "A"}}}
 -title "<name> shakes the dice cup and slam it on the table: "
 -desc " "||" {{a1}}, {{b1}} "||" "
+-color <color> -thumb <image>
+
+!alias dice3 embed
+{{a, b, c = roll("1d6"), roll("1d6"), roll("1d6")}}
+-title "<name> shakes the dice and slams the cup on the table:"
+-desc " "||" {{a}}, {{b}}, {{c}}  "||" "
+-color <color> -thumb <image>
+
+!alias dice4 embed
+{{a, b, c, d = roll("1d6"), roll("1d6"), roll("1d6"), roll("1d6")}}
+-title "<name> shakes the dice and slams the cup on the table:"
+-desc " "||" {{a}}, {{b}}, {{c}}, {{d}} "||" "
+-color <color> -thumb <image>
+
+!alias diceFull embed
+{{a, b, c, d, e = roll("1d6"), roll("1d6"), roll("1d6"), roll("1d6"), roll("1d6")}}
+-title "<name> shakes the dice and slams the cup on the table:"
+-desc " "||" {{a}}, {{b}}, {{c}}, {{d}}, {{e}}  "||" "
+-color <color> -thumb <image>
+
+Game: Killer: 
+!alias aim embed
+{{args="%1%%2%"}}
+{{adv,dis,ea, reset="adv" in args and not "dis" in args,"dis" in args and not "adv" in args,"ea" in args and not "dis" in args, "reset" in args}}
+{{perc = get_raw().skills.perception}}
+{{ pc = vroll(("3d20kh1+" if ea else "2d20kh1+" if adv else "2d20kl1+" if dis else "1d20+") +str(perc))}}
+{{ a = pc.total  }}
+{{ b = a - perc }}
+{{ target= 5 if (b==20) else 0 if (b==1) else 4 if ( b!=20 and a>19) else 3 if (b!=20 and a>14) else 2 if (b!=20 and a>9) else 1}}
+{{set_cvar_nx("killerTarget", 0)}}
+{{set_cvar("killerTarget", target)}}
+-title "<name> is taking aim for the target."
+-f "**Perception Check: **| {{ pc }}
+**Target adjustment**: {{ target }} higher/lower"
+-color <color> -thumb <image>
+
+!alias killer embed
+{{args="%1%%2%"}}{{adv,dis,ea, number="adv" in args and not "dis" in args,"dis" in args and not "adv" in args,"ea" in args and not "dis" in args, "start" in args}}{{target, attack = roll("1d20"), vroll(("3d20kh1+" if ea else "2d20kh1+" if adv else "2d20kl1+" if dis else "1d20+") +str((dexterityMod) +proficiencyBonus))}}{{a  = attack.total}}
+{{b = a-dexterityMod-proficiencyBonus}}
+
+{{set_cvar_nx("kNumber", 0)}} {{set_cvar_nx("killerTarget", 0)}} {{set_cvar_nx("kLives", 0)}}
+
+{{x, y = target-int(killerTarget), target+int(killerTarget)}}{{xa, ya = 20+x, 0-(20-y)}}{{xb, yb = xa if x<1 else x, ya if y>20 else y}}
+{{c, d, e = " " if a<10 else "1 Life" if (b!=20 and a < 16)  else "2 Lives" if (b !=20 and a < 21)  else "3 Lives" if (b==20 or (b !=20 and a > 20)) else " ", " 20] & [1 -" if (x<1 or y>20) else " ", "~~" if b==20 else " "}}{{multi, num = 3 if ( b==20 or a>20) else 2 if a>15  else 1, target if number else kNumber }}
+{{na = int(kLives)+multi}}
+
+{{set_cvar("kNumber", num )}}
+{{set_cvar("kLives", ( 0 if number else na if ( a>9 and int(kNumber)>=x and int(kNumber)<=y) else na if ( a>9 and x<1 and int(kNumber)>=xa) else na if ( a>9 and y>20 and int(kNumber)<=ya) else na if (b==20) else kLives ))}}
+{{set_cvar("kLives", 5 if (int(kLives)>4) else kLives)}}
+-title "<name> throws a dart!"
+-f "Target: {{ kNumber if b==20 else  (target)}}|Adjustment Range: {{e}} [ {{xb}} -{{d}} {{yb}} ] {{e}}
+Your Number: {{kNumber}}"
+-f "Meta|Attack :  {{attack}}
+ {{ "Hit: Triple!!!" if b==20 else "***Miss!!!***" if a<10 else "Hit: Single" if a<16  else "Hit: Double!" if a<21  else "Hit: Triple!!"}}"
+{{desc, killer = "but it misses the board" if a<10 else "and it hits. If the Number matches you gain/take:", "You are a KILLER! Target your enemy Number!" if int(kLives)>4 else " "}}
+-f "Effect| <name> throws the dart {{desc}} {{c}}"
+-color <color> -thumb <image>
+-footer "Lives: <kLives> {{killer}} | use '!killer start' to start the game"
+
+!alias life embed
+{{a = &ARGS&}}
+{{life = int(a[0]) if a else 0}}
+{{set_cvar_nx("kLives", 0)}}
+{{set_cvar("kLives", -1 if ((int(kLives) - int(life)) < 0) else (int(kLives) - int(life)) )}}
+{{set_cvar("kLives", 5 if int(kLives)>4 else kLives)}}
+{{ lr, lr1, out = "Remaining Lives: " if (int(kLives) >= 0) else " ", kLives if (int(kLives) >= 0) else " ", "***You are a KILLER!!***" if (int(kLives) == 5) else"***You are OUT!!!***" if (int(kLives) == -1) else " "}}
+-title "<name> is taking {{life}} damage!!"
+-desc "{{lr}} {{lr1}} {{out}}"
+-color <color> -thumb <image>
+
+!alias dart embed
+{{args="%1%%2%"}}
+{{adv,dis,ea, reset="adv" in args and not "dis" in args,"dis" in args and not "adv" in args,"ea" in args and not "dis" in args, "reset" in args}}
+{{target, attack = roll("1d20"), vroll(("3d20kh1+" if ea else "2d20kh1+" if adv else "2d20kl1+" if dis else "1d20+") +str((dexterityMod) +proficiencyBonus))}}
+{{a  = attack.total}}
+{{b = a - dexterityMod - proficiencyBonus}}
+{{c = " " if (a < 10) else "Bullseye!!!" if (b == 20) else (target)}}
+{{d = " " if (a < 10) else "Single." if (b !=20 and a < 16)  else "Double!" if (b !=20 and a < 21)  else "Triple!!" if (b !=20 and a > 20) else " "}}
+{{multi = 3 if (a > 20) else 2 if (a > 15) else 1 }}
+{{score =  0 if ( b !=20 and a < 10) else 50 if (b == 20) else (target * multi) }}
+{{desc = "but unfortunately it flies off wide and misses the board." if (a <10 and target <21) else "and it lands on"}}
+{{set_cvar_nx("dartScore", 0)}}
+{{set_cvar("dartScore", ( score if reset else (int(dartScore) + score)))}}
+-title "<name> throws a dart!"
+-f "**Target**: {{" " if (b == 20) else  (target)}}|**Attack**: {{attack}}
+ {{ "**Hit**: Bullseye!!!" if (b == 20) else "***Miss!!!***" if (a < 10) else "**Hit**: Single" if (a < 16)  else "**Hit**: Double!" if (a < 21)  else "**Hit**: Triple!!"}}"
+
+-f "Effect|<name> takes aim and throws the dart {{desc}} {{c}} {{d}} ( {{score}} )"
+-color <color> -thumb <image>
+-footer "Total Scores: <dartScore> | use !dart reset to reset the total scores"
+
+Cards:
+!alias deck2 embed {{set_cvar_nx("deck",get_gvar("774a7d80-bb59-4348-81fc-82ff0aa37d22"))}}{{a,cards=&ARGS&,load_json(deck)}}{{n,reset=int(a[0]) if a and a[0].isdigit() else 1,"reset" in "".join(a)}}
+{{used,unused=[card for card in cards if cards[card]], [card for card in cards if not cards[card]]}}
+{{n=min(n,len(unused))}}
+-desc " "||" {{"\n".join([("" if set("x",unused[roll(f'1d{len(unused)}-1')]) else "")+x+("" if cards.update({f'{x}': True}) or set("unused",[card for card in cards if not cards[card]]) else "") for i in range(n)]).replace("H"," of Hearts").replace("S"," of Spades").replace("D"," of Diamonds").replace("C"," of Clubs").replace("X","10").replace("A","Ace").replace("J","Jack").replace("Q","Queen").replace("K","King").replace("?1","Joker").replace("?2","Joker") if not reset else ""}} "|| ""
+{{set_cvar("deck",dump_json(cards) if not reset else deck.replace("true","false"))}}{{cards=load_json(deck)}}
+{{used,unused=[card for card in cards if cards[card]], [card for card in cards if not cards[card]]}}
+-title "<name> {{"reshuffe the Deck" if reset else f"draws {n if n>1 else 'a'} Card{'s' if n>1 else ''} for %2% "}}!"
+-footer "Cards Remaining:  {{len(unused)}} | !deck [number] to draw, !deck reset to reset the  deck |  Developed by @""silverbass#2407"
+-color <color> -thumb <image>
+
+Dice Poker:
+!alias dicePokerHand embed
+{{a, b= roll("1d6"), roll("1d6")}}
+-title "<name> rolls their dice:"
+-desc " "||" {{a}}, {{b}} "||" "
+-color <color> -thumb <image>
+
+!alias dicePokerInit embed
+{{a, b, c, d, e = roll("1d6"), roll("1d6"), roll("1d6"), roll("1d6"), roll("1d6")}}
+-title "<name> Rolls five initial dice for the table:"
+-desc " {{a}}, {{b}}, {{c}}, {{d}}, {{e}} "
+-color <color> -thumb <image>
+
+!alias dicepool embed
+{{a, b, c, d, e = roll("1d6"), roll("1d6"), roll("1d6"), roll("1d6"), roll("1d6")}}
+{{a1  = "9" if (a == 1) else "10" if (a == 2) else "J" if (a == 3) else "Q" if (a == 4) else "K" if (a == 5) else "A"}}} 
+{{b1  = "9" if (b == 1) else "10" if (b == 2) else "J" if (b == 3) else "Q" if (b == 4) else "K" if (b == 5) else "A"}}} 
+{{c1  = "9" if (c == 1) else "10" if (c == 2) else "J" if (c == 3) else "Q" if (c == 4) else "K" if (c == 5) else "A"}}} 
+{{d1  = "9" if (d == 1) else "10" if (d == 2) else "J" if (d == 3) else "Q" if (d == 4) else "K" if (d == 5) else "A"}}} 
+{{e1  = "9" if (e == 1) else "10" if (e == 2) else "J" if (e == 3) else "Q" if (e == 4) else "K" if (e == 5) else "A"}}} 
+-title "<name> is rolling the dice pool: "
+-desc " {{a1}}, {{b1}}, {{c1}}, {{d1}}, {{e1}}  "
 -color <color> -thumb <image>
