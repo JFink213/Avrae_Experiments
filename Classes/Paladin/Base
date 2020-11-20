@@ -35,3 +35,22 @@ A turned creature must spend its turns trying to move as far away from you as it
 {{f'-f "{target.name} | {droll}"' if target else f'-f " "Meta" | **Damage{" (CRIT!)" if cr == 2 else ""}:** {droll}"'}}
 {{f'-f "Spell Slots {"(-1)" if not i else ""}| {slots_str(slot)}"'}}
 -footer "{{f"{target}\n" if target else ""}}!smite [-l #] [-i] [-t target] [crit] [fiend|undead] | Made by @""Kortar#9227"
+
+!alias loh embed {{P,type,a,i,c,Help,cco,ccn  = get("PaladinLevel",0), "&1&", argparse(&ARGS&), '-i' in &ARGS&, combat(), f'[disease|poison|healing amount #] [-i] [-t target]',"Lay on Hands","Lay on Hands Pool"}}
+{{amt,pclass,lh,cd,cp,target,cc = -int("&2&") if '&2'+'&' != '&2&' else 0,int(P) >= 1, 'healing' or 'heal' in type, 'disease' in type, 'poison' in type, a.last("t"),cco if cc_exists(cco) else ccn}}
+{{target,call = c.get_combatant(target) if c and target else None, cd or cp}}
+{{ed,ep = target.get_effect('disease') if target else '', target.get_effect('poison') if target else ''}}
+-title "Lay on Hands!"
+-color f8f8ff
+-thumb <image>
+{{sroll,times =(f'{amt}' if not call else "0")+'[heal]',-amt}}
+{{amt = amt*5 if call else amt}}
+{{cg = get_cc(cc)>=-amt}}
+{{'' if i else mod_cc(cc,amt) if cg else err(f'Not enough points of Lay on Hands remaining.\n **{Help}**\n You only have {get_cc(cc)} Points left')}}
+{{f'-desc "{name} heals {times if times > 1 else "a" if times == 1 else ""} {"Disease Condition(s)" if cd else "Poison Condition(s)" if cp else ""} using {-amt} points of Lay on Hands!"' if pclass or i else err(f'You do not have this Ability!\n **{Help}**')}}
+{{droll = target.damage(sroll).damage if target else (sroll)}}
+{{f'-f "{target.name} | {droll}"' if target else f'-f " "Meta" | **Damage:** {droll}"'}}
+{{f'-f "Effect|{"Disease" if cd else "Poison" if cp else ""} effect removed from {target.name if target else "subject"}."' if call else ''}}
+{{target.remove_effect('disease') if ed and call else target.remove_effect('poison') if ep and call else ''}}
+{{f'-f "{cc} {f"({amt})" if not i else ""}| {cc_str(cc)}"'}}
+-footer "{{f"{target}\n" if target else ""}}!loh [disease|poison|healing amount #] [-i] [-t target] | Made by @""Kortar#9227"
