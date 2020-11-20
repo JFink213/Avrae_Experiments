@@ -1,14 +1,1 @@
 !alias cleaning embed -title "Cleaning up" -desc "<name> gathers up the used bowls, mugs, utensils, cooking pots, etc. and washes them in the nearest available water source. He then driest them off with a cloth and puts them away." –thumb <image> -color <color>
-
-!alias livestock check animal 
--title "Feeding and grooming the horses, mules, goats and chickens (Animal Handling)" 
--phrase "<name> feeds the camps horses and mules, making sure their oats, hay and water are filled. Next, she grooms them, making sure their coats are brushed and dust free, that their manes and tails are detangled and there are clear of any rocks or mats of grass. Ensures the goats and chickens are accounted for and clean" -image <image> -color <color>
-
-!alias bite embed 
--title "{{f"{name} Jumps up and latches on {'&1&'.title()}" if '&1&' else 'Bite-Fu'}}!" 
--desc "This attack deals 1 point of damage, the target is bit and it hurts. (AC to hit)." 
--f "Attack|To Hit: {{vroll("1d20+" +str(max(dexterityMod,strengthMod) +proficiencyBonus))}}" {{"" if image=="" else "-thumb "+image}} 
--color <color>
-
-!alias boop embed -title "*{{f"{name} boops {'&*&'.title()}" if '&*&' else 'Boop'}}*!" -desc "*This attack deals no damage, and automatically hits if the target allows it.*" -f "Attack|**To Hit:** {{vroll("1d20+" +str(max(dexterityMod,strengthMod) +proficiencyBonus))}}" {{"" if image=="" else "-thumb "+image}} -color <color>
-
