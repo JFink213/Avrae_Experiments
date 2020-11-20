@@ -4,3 +4,14 @@
 
 
 !alias Vardo embed -title "Welcome to <name>'s Vardo" -desc "the interior of <name>'s Vardo contain a bed, desk, dresser, bench and chest, along with hooks near the door and a small wood stove. above the workstation is a shelve with various tomes, most retaining to religions or medical domains, several to oddities and creatures, one, a periodical from Sharn, as well as several tightly bound scrolls of parchment. The dresser currently containing just more leather strips and straps as well as tools seems to contain few clothes, when unequipped his armor sits atop the dresser, and his vestments next to them, well folded, to present a blue pedaled flower to the top. Some shelves along contain an odd assortment of trinkets from his travels, atop the stove sits a red metal cup, with a strange metal straw sitting on a shelf above where other jars with herbal components sit. Pouches and a worn cloak hang from near the door, and assortments of barrels and crates sit near a wall, the bench, when lifted contains more tools, as well as more rolls of leather. The interior is colored in basic browns and greens, and looks lived in but basic to the eye" -thumb https://media.discordapp.net/attachments/723679830562046053/740769345424064613/f95a8dd498dc7e602cadeb69095543b7.jpg -color 5f3811
+
+!alias dreamcatcher embed
+{{target= "&*&" or "you"}}
+{{sumlist = get("sumlist", get_gvar("2e62e660-c5a4-4d5b-82de-64d6876cb5bb")).split("\n")}}
+{{image = sumlist[randint(len(sumlist))]}}
+ -desc "**<name> uses the dream catcher to summon to {{f" {target}"}}!!**  
+<name> grasps the dream catcher and closes their eyes.  They picture {{f" {target}"}} in their minds and whisper *We are in need...come forth and lend us your aid*....."
+-footer "**You have been summoned..... **"
+-color #39FF14  -image {{image}}
+
+!alias signalhorn check performance -title "Blows a Signal Alarm Blast on a horn" -dc 8
