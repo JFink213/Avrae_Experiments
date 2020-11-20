@@ -1,0 +1,23 @@
+!alias applyPoison embed
+{{c = combat()}}
+{{c.me.add_effect('Poisoned Weapon', ,10) if c else ''}}
+-title "<name> applies poison to their weapon"
+-desc "You can use the poison to coat one slashing or piercing weapon or up to three pieces of ammunition. Applying the poison takes an action. A creature hit by the poisoned weapon or ammunition must make a DC 10 Constitution saving throw or take 1d4 poison damage. Once applied, the poison retains potency for 1 minute before drying."
+-f  "Con Save DC| 10"
+
+!alias poisonWeapon embed
+{{DC = 10 }}
+{{a,c  = argparse(&ARGS&), combat()}}
+{{target = a.last("t")}}
+{{combatant =c.get_combatant(target)}}
+{{value= combatant.save("con").total}}
+-title "{{f"{name} {'hits the target with a weapon that has poison applied to it!'} "}}"
+{{ sroll = (("1d4" + "[poison]"))}}
+{{ d = vroll(sroll) }}
+{{ e = -d.total if value <= DC else 0}}
+{{ combatant.mod_hp(e,True) if e != 0 else 'Combatant made their save'}}
+-f "{{f" Roll|{d}"}}"
+-f "{{f" Damage|{e}"}}"
+-f "Con Save DC| {{DC}}"
+-f "{{f" Con Save|{value}"}}"
+-f "{{f" {combatant}" }}"
