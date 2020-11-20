@@ -5,3 +5,9 @@
 -color <color>
 
 !alias boop embed -title "*{{f"{name} boops {'&*&'.title()}" if '&*&' else 'Boop'}}*!" -desc "*This attack deals no damage, and automatically hits if the target allows it.*" -f "Attack|**To Hit:** {{vroll("1d20+" +str(max(dexterityMod,strengthMod) +proficiencyBonus))}}" {{"" if image=="" else "-thumb "+image}} -color <color>
+
+!alias fruit embed 
+-title "**{{f"{name} attemps to hit the fruit thrown by {'&*&'.title()}" if '&*&' else 'No one threw any fruit!'}}**!" 
+-desc "*do they hit? taking guesses now! 10+ to hit*" 
+-f "Attack|**To Hit:** {{vroll("1d20+" +str(max(dexterityMod,strengthMod) +proficiencyBonus))}}" {{"" if image=="" else "-thumb "+image}} 
+-color <color>
