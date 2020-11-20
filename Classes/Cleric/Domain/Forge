@@ -1,0 +1,12 @@
+Channel Divinity: Artisan's Blessing
+!alias channelArtisans embed
+{{useCleric=exists("ClericLevel")}}
+{{lvl=int(ClericLevel) if useCleric else int(PaladinLevel)}}
+{{counter="Channel Divinity"}}
+{{mod_cc(counter, -1, True) if lvl else 0}}
+-title "<name> Uses {{counter}}."
+-desc "Your oath allows you to channel divine energy to fuel magical effects. You can use your Channel Divinity to conduct an hour-long ritual that crafts a nonmagical item that must include some metal: a simple or martial weapon, a suit of armor, ten pieces of ammunition, a set of tools, or another metal object. The thing you create can be something that is worth no more than 100 gp"
+-f "DC|{{get_raw().spellbook.dc}}"
+-f "{{counter}}|{{'◉'*get_cc(counter) + '〇'*(get_cc_max(counter)-get_cc(counter))}}"
+-footer "{{"Cleric | 58-59" if useCleric else "Paladin | 85"}}" 
+-color 8a496b -thumb https://media.discordapp.net/attachments/730869447023263755/741288142719549460/giphy.gif
