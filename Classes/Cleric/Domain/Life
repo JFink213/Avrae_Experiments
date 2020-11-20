@@ -1,4 +1,4 @@
-Preserve Life Alias:
+Channel Divinity: Preserve Life:
 !alias preserveLife embed 
 # get combatants that are specified in targeting.
 {{a,c,  = argparse(&ARGS&), combat()}}
