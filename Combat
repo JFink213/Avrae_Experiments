@@ -2,3 +2,38 @@
 
 Alternatively, you can aid a friendly creature in attacking a creature within 5 feet of you. You feint, distract the target, or in some other way team up to make your ally’s attack more effective. If your ally attacks the target before your next turn, the first attack roll is made with advantage." -footer "Actions in Combat | PHB 192" -thumb {{image if "&2"+"&"=="&2&" else ""}} -color <color>
 
+!alias cleave a "&1&" 
+<drac2>
+attacks= get_raw().attacks
+for x in attacks:
+    if x.name.lower() == "&1&".lower():
+        attack = x 
+        break
+
+for x in attack.automation[0].effects:
+    if x.get("attackBonus", False).isdigit():
+        AB = x.attackBonus 
+
+args = &ARGS&
+targets = argparse(args).get("t")
+c = combat()
+t1 = c.get_combatant(targets[0])
+t2 = c.get_combatant(targets[1])
+AC = t1.ac if t1.ac > t2.ac else t2.ac
+
+bonusDamage = vroll("2d6/2")
+bonus=argparse(&ARGS&).get('b','0',str)
+hitbonus = 0
+for x in bonus:
+    hitbonus = hitbonus + int(x)
+vrollstring = f"1d20+{AB}"
+vrollstring = vrollstring if hitbonus == 0 else vrollstring+f"+{str(hitbonus)}"
+tohit = vroll(vrollstring)
+out=[]
+
+out.append(f"-f '**To Hit:** {tohit} \n **Cleave Damage:** {bonusDamage}'")
+out.append("hit" if tohit.total >= AC else "miss")
+out.append(f"-d {str(bonusDamage.total)}")
+return " ".join(out)
+</drac2>
+&*&
