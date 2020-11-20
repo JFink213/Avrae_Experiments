@@ -1,0 +1,9 @@
+!alias hk embed
+{{(create_cc_nx("Healer's Kit"), set_cc("Healer's Kit", 10)) if not cc_exists("Healer's Kit") else ""}}{{n="&1&"=="&"+"1&" or "&2&"=="&"+"2&" or not "&2&".isdigit()}}
+{{kit = get_cc("Healer's Kit")}}
+{{hroll = vroll(f"1d6+4+&2&") if not n else ""}}
+{{"" if kit < 1 else (mod_cc("Healer's Kit", -1, strict=True))}}
+{{f''' -title "{name} forgot to aim or apply a level to their Healer's Kit!"''' if n else f'''-title "{name} uses a Healer's Kit with the Healer feat!" '''}}
+{{ f' -f "{name} bandages the wounds of &1& to stop some of the bleeding.|Hit Points Recovered: {hroll}" '}}
+-f "Healers Kit|This kit is a leather pouch containing bandages, salves, and splints. The kit has ten uses. As an action, you can expend one use of the kit to stabilize a creature that has 0 hit points, without needing to make a Wisdom (Medicine) check."
+-f "Healer Feat|When you use a healers kit to stabilize a dying creature, that creature also regains 1 hit point, Or as an action, you can spend one use of a healers kit to tend to a creature and restore 1d6 + 4 hit points to it, plus additional hit points equal to the creature maximum number of Hit Dice. The creature cant regain hit points from this feat again until it finishes a short or long rest."
