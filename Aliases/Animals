@@ -11,3 +11,8 @@
 -image https://media.discordapp.net/attachments/730869447023263755/751348049628102666/61FFB4zpvsL.png
 
 !alias hens check animal -title "Tending the Chickens (Animal Handling)" -phrase "<name> Checks on the hens to see if any are missing, injured, or sick. Digs and uncovers worms, slugs, spiders, and other bugs for them to snack. Makes 'happy/feeding' clucks so they feel comfortable. Helps with any loose feathers, trims beak or talons as needed. Sprinkles mix of wild grains, crumbs, and crushed shell in a small pile, cleans and refills water dish. Searches and collects any eggs present." -image <image> -color <color>
+
+
+!alias livestock check animal 
+-title "Feeding and grooming the horses, mules, goats and chickens (Animal Handling)" 
+-phrase "<name> feeds the camps horses and mules, making sure their oats, hay and water are filled. Next, she grooms them, making sure their coats are brushed and dust free, that their manes and tails are detangled and there are clear of any rocks or mats of grass. Ensures the goats and chickens are accounted for and clean" -image <image> -color <color>
