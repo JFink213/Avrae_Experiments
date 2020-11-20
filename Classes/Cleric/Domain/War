@@ -1,0 +1,2 @@
+Channel Divinity: Guided Strike || War God’s Blessing:
+!alias warCD i aoo %1% %2% -t %3% {{'hit' if (int('&4&') + 10) >= combat().get_combatant('&3&').ac else 'miss'}} {{mod_cc('Channel Divinity', -1)}} -f 'Channel Divinity|{{cc_str('Channel Divinity')}} (-1)'
