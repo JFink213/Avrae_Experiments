@@ -1,0 +1,7 @@
+!snippet sneak {{dice=ceil(int(get('RogueLevel',0))/2)}}
+{{f'-d1 "{dice}d6" -f "Sneak Attack|Once per turn, you can deal an extra {dice}d6 damage to one creature you hit with an attack if you have advantage on the attack roll."' if dice else '-f "You are not a rogue. You do not get sneak attack."'}}
+
+!alias rogue-unc embed {{dhp,cb=int("&1&") if "&1&".isdigit() else 0,"&2&" if "&2"+"&"!="&2&" else name}}
+{{c=combat()}}{{cb=c.get_combatant(cb) if c else ""}}
+ -title "{{cb.name if cb else name}} uses Uncanny Dodge!" {{f'-desc "**Original Damage:** {dhp}\n**Damage Prevented:** {ceil(dhp/2)}"' if dhp else ""}} -f "Effect|When an attacker that you can see hits you with an attack, you can use your reaction to halve the attack's damage against you." -color <color> {{f'-thumb {image}' if not cb else ""}}
+{{(cb.mod_hp(ceil(dhp/2),False) or f'-footer "{cb} | !rogue-unc [damage] [combatant, if NPC]"' if cb else mod_hp(ceil(dhp/2),False) or f'-footer "{name}: <{get_hp()}/{hp} HP> | !rogue-unc [damage] [combatant, if NPC]"') if dhp else '-footer "!rogue-unc [damage] [combatant, if NPC]"'}}
