@@ -1,0 +1,6 @@
+!snippet swashSneak {{dice=ceil(int(get('RogueLevel',0))/2)}}
+{{f'-d1 "{dice}d6" -f "**Sneak Attack**|Once per turn, you can deal an extra {dice}d6 damage to one creature you hit with an attack if you have advantage on the attack roll."' if dice else '-f "You are not a rogue. You do not get sneak attack."'}}
+-f "**Rakish Audacity** | You gain an additional way to use your Sneak Attack; you don't need advantage on the attack roll to use your Sneak Attack against a creature if you are within 5 feet of it, no other creatures are within 5 feet of you, and you don't have disadvantage on the attack roll. All the other rules for Sneak Attack still apply to you."
+
+!snippet fancyFoot -f "**Fancy Footwork** | At 3rd level, you learn how to land a strike and then slip away without reprisal. During your turn, if you make a melee attack against a creature, that creature can't make opportunity attacks against you for the rest of your turn."
+
