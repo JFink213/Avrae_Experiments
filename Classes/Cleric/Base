@@ -37,3 +37,17 @@ Cleric Level |  Destroys Undead of CR...
 -f "{{counter}}|{{'◉'*get_cc(counter) + '〇'*(get_cc_max(counter)-get_cc(counter))}}"
 -footer "{{"Cleric | 58-59" if useCleric else "Paladin | 85"}}" 
 -color ffc100 -thumb <image>
+
+
+!snippet DS <drac2>
+clericLevel = int(get("ClericLevel",0))
+count = (clericLevel > 7)+(clericLevel > 13)
+subclass = load_json(get("subclass")).ClericLevel
+domains = ["War","Life","Nature","Tempest","Trickery","Forge","Death","Order","Twilight Domain"]
+dtype = ["","[radiant]","","[thunder]","[poison]","[fire]","[necrotic]","[psychic]","[psychic]"]
+outtype = dtype[domains.index(subclass)] if count > 0 else ""
+
+out = f'-d1 {count}d8{outtype}'
+return out
+</drac2>
+-f "Divine Strikes|At 8th level, you gain the ability to infuse your weapon strikes with divine energy. Once on each of your turns when you hit a creature with a weapon attack, you can cause the attack to deal an extra 1d8 {{outtype}} damage to the target. When you reach 14th level, the extra damage increases to 2d8."
