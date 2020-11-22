@@ -1,2 +1,14 @@
 !snippet EfD -mc 8 -f "**Ear for Deceit** | You develop a talent for picking out lies. Whenever you make a Wisdom (Insight) check to determine whether a creature is lying, treat a roll of 7 or lower on the d20 as an 8."
 
+!alias insightfulFighting embed
+{{a,c=argparse(&ARGS&), combat()}}
+{{target=a.last("t")}}
+{{combatant=c.get_combatant(target)}}
+{{insight = get_raw().skills.insight}}
+{{cs = combatant.save("cha").result}}
+{{value= combatant.save("cha").total}} 
+-title "{{f"{name} uses Insightful Fighting!"}}"
+-desc "**Insightful Fighting** | As a bonus action, you can make a Wisdom (Insight) check against a creature you can see that isn't incapacitated, contested by the target's Charisma (Deception) check. If you succeed, you can use your Sneak Attack against that target even if you don't have advantage on the attack roll, but not if you have disadvantage on it."
+-f "{{f" Charisma Check|{value}"}}"
+-f "{{f" Insight Check|{insight}"}}"
+-f '{{f"You can take a sneak attack action" if insight >= value else "the creature is un-readable"}}'
