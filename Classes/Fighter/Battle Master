@@ -79,3 +79,27 @@
 -f "{{f" {combatant}" }}"
 -footer "Fighter Battle Master Class Feature | PHB 74"
 
+!snippet quickTossAxe {{c = 'Handaxes'}}
+{{C, axeF = 'Used ' + c, get('axeF', 0) + 1}}
+{{create_cc_nx(C, 0)}}
+{{(create_cc_nx(c, 0), set_cc(c, 2)) if not cc_exists(c) else ''}}
+{{v = get_cc(c) > 0}}
+{{miss = get('miss', 0) + (not v)}}
+{{(mod_cc(c, -1), mod_cc(C, 1)) if v else f'miss{miss}'}}
+{{f'-phrase "{f"{name} makes a quick draw and throw of a handaxe" if axeF == 1 else "...and another one"} ({get_cc(c)} remaining)"'}}
+{{cc = "Superiority Dice"}}
+{{q=cc_exists(cc) and get_cc(cc)}}
+{{mod_cc(cc, -1) if q else ''}}
+{{'-d 1d8' if q else 'miss -phrase "but failed due to being out of Superiority Dice!"'}} 
+-f "**Quick Toss**|As a bonus action, you can expend one superiority die and make a ranged attack with a weapon that has the thrown property. You can draw the weapon as part of making this attack. If you hit, add the superiority die to the weapon’s damage roll. (TCE)"
+-f "**Throw**| If a weapon has the thrown property, you can throw the weapon to make a ranged attack. If the weapon is a melee weapon, you use the same ability modifier for that attack roll and damage roll that you would use for a melee attack with the weapon. For example, if you throw a handaxe, you use your Strength, but if you throw a dagger, you can use either your Strength or your Dexterity, since the dagger has the finesse property. (PHB 146)"'
+-f "Superiority Dice{{" (-1)" if v else ''}}|{{cc_str(cc)}}"
+
+!snippet riposte {{cc = "Superiority Dice"}}
+{{v=cc_exists(cc) and get_cc(cc)}}
+-title "{{f"[name] {'ripostes' if v else 'tries to riposte'} with [aname]!"}}"
+{{mod_cc(cc, -1) if v else ''}}
+{{'-d 1d8' if v else 'miss -phrase "but failed due to being out of Superiority Dice!"'}} 
+-f "**Riposte**|When a creature misses you with a melee attack, you can use your reaction and expend one superiority die to make a melee weapon attack against the creature. If you hit, you add the superiority die to the attack's damage roll."
+{{combat().me.add_effect("Riposted","",1) if v and combat() and combat().me else '' # Why are you adding an effect anyway?}}
+-f "Superiority Dice{{" (-1)" if v else ''}}|{{cc_str(cc)}}"
