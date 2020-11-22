@@ -1,1 +1,12 @@
 !alias cleaning embed -title "Cleaning up" -desc "<name> gathers up the used bowls, mugs, utensils, cooking pots, etc. and washes them in the nearest available water source. He then driest them off with a cloth and puts them away." –thumb <image> -color <color>
+
+!alias summon embed
+{{target= "&*&" or "you"}}
+{{sumlist = get("sumlist", get_gvar("22f6d26a-e801-4f44-a249-43039a7529eb")).split("\n")}}
+{{image = sumlist[randint(len(sumlist))]}}
+ -desc "**<name> issues a summon to {{f" {target}"}}!!**  
+
+<name> gestures and starts to mutter in an arcane tongue, a sphere of energy emanates from them and a call is sent across the Aether of the interweb calling upon the one they seek to show themselves....."
+-footer "**You have been summoned.....**"
+
+-color #39FF14  -image {{image}}
