@@ -1,0 +1,7 @@
+!snippet assassinSup adv crit -f "Assassinate| You have advantage on attack rolls against any creature that hasn’t taken a turn in the combat yet, and any hit you score against a creature that is surprised is a critical hit."
+
+!snippet assassin adv -f "Assassinate| You have advantage on attack rolls against any creature that hasn’t taken a turn in the combat yet, and any hit you score against a creature that is surprised is a critical hit."
+
+!alias InfiltrationExpert embed
+-title "<name> uses their training to create a superior false identity"
+-desc "Starting at 9th level, you can unfailingly create false identities for yourself. You must spend seven days and 25 gp to establish the history, profession, and affiliations for an identity. You can't establish an identity that belongs to someone else. For example, you might acquire appropriate clothing, letters of introduction, and official-looking certification to establish yourself as a member of a trading house from a remote city so you can insinuate yourself into the company of other wealthy merchants"
