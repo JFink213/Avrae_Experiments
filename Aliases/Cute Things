@@ -11,3 +11,9 @@
 -desc "*do they hit? taking guesses now! 10+ to hit*" 
 -f "Attack|**To Hit:** {{vroll("1d20+" +str(max(dexterityMod,strengthMod) +proficiencyBonus))}}" {{"" if image=="" else "-thumb "+image}} 
 -color <color>
+
+!alias snowball embed 
+-title "*{{f"{name} Throws a snowball at {'&*&'.title()}" if '&*&' else 'Snowball'}}*!" 
+-desc "*This attack deals no damage, the target is covered in some snow if the snowball hits (AC to hit).*" 
+-f "Attack|**To Hit:** {{vroll("1d20+" +str(max(dexterityMod,strengthMod) +proficiencyBonus))}}" {{"" if image=="" else "-thumb "+image}} 
+-color <color>
