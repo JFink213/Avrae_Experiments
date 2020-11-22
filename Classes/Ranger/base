@@ -1,0 +1,13 @@
+!alias primeval embed
+{{s=int('%1%') if &ARGS& else 1}}
+{{g=get_slots(s)}}
+{{u=str(use_slot(s)) if g else ''}}
+{{e='Expended a spell slot.' if u else 'No remaining spell slots of that level.'}}
+-title '<name> uses their Primeval Awareness'
+
+-desc "{{f' As an action, you can expend one ranger spell slot (1 minute per level of spell slot) to sense whether any aberrations, celestials, dragons, elementals, fey, fiends, or undead are present within 1 mile of you (or within up to 6 miles if you are in your favored terrain). This feature doesn’t reveal the creatures’ location or number.'}}"
+-f "{{"Spell Slots"}}| {{slots_str(s) if u else 'No remaining spell slots of that level.' }}"
+-footer 'Ranger | 92 
+ !primeval [spell slot level]'
+-thumb <image>
+-color <color>
