@@ -1,0 +1,7 @@
+!snippet destructiveWrath embed {{cc = "Channel Divinity"}}
+{{v=cc_exists(cc) and get_cc(cc)}}
+-title "<name> calls upon their gods to enhance their strength of the elements they wield!"
+{{get_gvar("d1418c5b-585d-4d57-8bd5-5e201fd95956")}}
+{{mod_cc(cc, -1) if v else ''}}
+-f "Channel Divinity: Destructive Wrath|When you roll lightning or thunder damage, you can use your Channel Divinity to deal maximum damage, instead of rolling."
+-f "Channel Divinity{{" (-1)" if v else ''}}|{{cc_str(cc)}}"
