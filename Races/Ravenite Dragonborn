@@ -1,0 +1,4 @@
+!snippet vengA {{counter="Vengeful Assault"}}
+{{mod_cc(counter, -1, True) }}
+-f "**Vengeful Assault**| When you take damage from a creature in range of a weapon you are wielding, you can use your reaction to make an attack with the weapon against that creature. Once you use this trait, you can’t do so again until you finish a short or long rest."
+-f "{{counter}}|{{'◉'*get_cc(counter) + '〇'*(get_cc_max(counter)-get_cc(counter))}}"
