@@ -5,3 +5,42 @@
 {{mod_cc(cc, -1) if v else ''}}
 -f "Channel Divinity: Destructive Wrath|When you roll lightning or thunder damage, you can use your Channel Divinity to deal maximum damage, instead of rolling."
 -f "Channel Divinity{{" (-1)" if v else ''}}|{{cc_str(cc)}}"
+
+!alias WotS embed
+#counter work#
+{{lvl = int(ClericLevel)}}
+{{counter = "Wrath of the Storm"}}
+{{v=cc_exists(counter) and get_cc(counter)}}
+
+# gather target#
+{{a,c  = argparse(&ARGS&), combat()}}
+{{target = a.last("t")}}
+{{combatant =c.get_combatant(target)}}
+
+#Check Save#
+{{DC = 8 + proficiencyBonus + wisdomMod}}
+{{value= combatant.save("dex").total}}
+{{check = DC >= value}}
+
+#applying damage#
+{{dtype = "&1&"}}
+{{th, li = 'thunder' in dtype, 'lightning' or 'light' in dtype}}
+{{sroll = "2d8" + ("[thunder]" if th else "[lightning]")}}
+{{ damage = vroll(sroll)}}
+{{ e = -damage.total if DC >= value else floor(-damage.total/2)}}
+{{ combatant.mod_hp(e,True) if v else 'failed due to being out of uses of Wrath of the Storm!'}}
+
+#counter reduction#
+{{mod_cc(counter, -1, True) if lvl else 0}}
+
+#Displaying Info#
+-title "{{f"{name} {'attempts to use Wrath of the Storm' if v else 'fails to use Wrath of the Storm'} on their enemy!"}}"
+-desc "You thunderously rebuke attackers. When a creature within 5 feet of you that you can see hits you with an attack, you can use your reaction to cause the creature to make a Dexterity saving throw. The creature takes 2d8 lightning or thunder damage (your choice) on a failed saving throw, and half as much damage on a successful one."
+-f "{{f" Dex Save|{value}"}}"
+-f "{{f" Save DC|{DC}"}}"
+-f "{{f" Rolled Damage | {damage} "}}"
+-f "{{f" Final Damage | {-e} {dtype} damage" }}"
+-f "{{f"{counter}|{cc_str(counter) if cc_exists(counter) else 'None'}"}}"
+-f "{{f" {combatant}" }}"
+-color  dcc76a
+-footer "!WotS [thunder | lightning] [-t target] | Tempest Domain | PHB 62 | Version 1.0"
