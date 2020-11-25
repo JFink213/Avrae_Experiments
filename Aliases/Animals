@@ -16,3 +16,7 @@
 !alias livestock check animal 
 -title "Feeding and grooming the horses, mules, goats and chickens (Animal Handling)" 
 -phrase "<name> feeds the camps horses and mules, making sure their oats, hay and water are filled. Next, she grooms them, making sure their coats are brushed and dust free, that their manes and tails are detangled and there are clear of any rocks or mats of grass. Ensures the goats and chickens are accounted for and clean" -image <image> -color <color>
+
+!alias horse check animal -title "<name> Attends to Caslav and Zlatik
+" -phrase "<name> brings fresh hay and water to Caslav and Zlatik, his vardo's horses, grooming them and 
+checking their overall wellness" -thumb https://i.pinimg.com/564x/bc/a6/57/bca657dca518db166aac2f9f989724bf.jpg  -color <color>
