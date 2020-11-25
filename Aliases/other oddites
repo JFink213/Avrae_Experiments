@@ -10,3 +10,15 @@
 -footer "**You have been summoned.....**"
 
 -color #39FF14  -image {{image}}
+
+!alias fishing embed
+{{a = vroll("1d20+" + str(get_raw().skills.perception))}}
+{{b = vroll("1d20+" + str(get_raw().skills.investigation))}}
+{{c= vroll("1d20+" + str(get_raw().skills.sleightOfHand))}}
+-title "<name> goes fishing" 
+-desc "<name> tries to find a nice spot to get some fish"
+-f "Perception |{{a.total}}"
+-f "Investigation | {{b.total}}"
+-f "Sleight Of Hand| {{c.total}}"
+-f "{{"you got fish!" if (a.total)>10 and (b.total)>10 and (c.total)>10 else "better luck next time"}}"
+-thumb
