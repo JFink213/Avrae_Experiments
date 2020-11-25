@@ -1,0 +1,1 @@
+!snippet smol -d {level} {{mod_cc("Fury of the Small", -1, True)}} -f "Fury of the Small (-1)|{{cc_str("Fury of the Small")}}"
