@@ -67,3 +67,27 @@
 -f "Evasive AC|{{armor + sDie.total}}"
 -f "Evasive Footwork|When you move, you can expend one superiority die, rolling the die and adding the number rolled to your AC until you stop moving."
 -f "Martial Adept{{" (-1)" if v else ''}}|{{cc_str(cc)}}"
+
+!alias goadingAttack embed
+{{cc = "Martial Adept"}}
+{{v=cc_exists(cc) and get_cc(cc)}}
+{{DC = 8 + proficiencyBonus + max(strengthMod, dexterityMod)}}
+{{mod_cc(cc, -1) if v else ''}}
+{{a,c  = argparse(&ARGS&), combat()}}
+{{target = a.last("t")}}
+{{combatant =c.get_combatant(target)}}
+-title "{{f"{name} {'attempts to Goad' if v else 'fails to Goad'} their enemy!"}}"
+{{ d = "1d6"}}
+{{cs = combatant.save("wis").result}}
+{{value= combatant.save("wis").total}}
+{{c.get_combatant(target).add_effect("Goaded","",1) if v and value<=DC else ''}}
+-f "**Goading Attack**|When you hit a creature with a weapon attack, you can expend one superiority die to attempt to goad the target into attacking you. You add the superiority die to the attack’s damage roll, and the target must make a Wisdom saving throw. On a failed save, the target has disadvantage on all attack rolls against targets other than you until the end of your next turn."
+
+{{droll = combatant.damage(d).damage if v else "failed due to being out of Martial Adept Superiority Dice!"}}
+-f "{{f" Damage|{droll}"}}"
+-f "{{f" Wis Save|{value}"}}"
+-f "Maneuver save DC| {{DC}}"
+-f "{{f" **{combatant.name} is Goaded**" if v and value<=DC else f"**{combatant.name} is not Goaded**"}}"
+-f "Martial Adept{{" (-1)" if v else ''}}|{{cc_str(cc)}}"
+-f "{{f" {combatant}" }}"
+-footer "Fighter Battle Master Class Feature | PHB 168"
