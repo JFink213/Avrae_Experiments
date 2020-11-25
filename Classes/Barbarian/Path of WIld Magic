@@ -13,3 +13,11 @@
 {{f' -f "Hit Points| {get_hp()}/{hp} ({get_temphp()} temp)"' if  surgeRoll.total == 1 else ""}}
 -color <color>
 -thumb <image>
+
+!alias magicAware embed
+{{counter="Magic Awareness"}}
+{{mod_cc(counter, -1, True) }}
+-title "<name> Uses {{counter}} to locate magic in their surroundings."
+-desc "As an action, you can open your awareness to the presence of concentrated magic. Until the end of your next turn, you know the location of any spell or magic item within 60 feet of you that isn’t behind total cover. When you sense a spell, you learn which school of magic it belongs to."
+-f "{{counter}}|{{'◉'*get_cc(counter) + '〇'*(get_cc_max(counter)-get_cc(counter))}}"
+-footer "Note: Magic Awareness is not Identify"
