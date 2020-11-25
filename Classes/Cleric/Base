@@ -51,3 +51,19 @@ out = f'-d1 {count}d8{outtype}'
 return out
 </drac2>
 -f "Divine Strikes|At 8th level, you gain the ability to infuse your weapon strikes with divine energy. Once on each of your turns when you hit a creature with a weapon attack, you can cause the attack to deal an extra 1d8 {{outtype}} damage to the target. When you reach 14th level, the extra damage increases to 2d8."
+
+!alias harnessDivinePower embed
+{{ level = %1%}}
+{{lvl=int(ClericLevel)}}
+{{counter="Harness Divine Power"}}
+{{ slot_check = level <= ceil(proficiencyBonus/2)}}
+{{mod_cc(counter, -1, True) if slot_check == True else mod_cc(counter, 0, True)}}
+-title "{{ f" {name} uses {counter} to replenish a {level} level spell slot." if slot_check == True else 'Not high enough level to restore that level of slot.' }}"
+{{ f' -desc "{name} converts a Channel Divinity into a {level} level spell slot as a bonus action." ' if slot_check == True else "Not high enough level to restore that level of slot" }}
+{{set_slots(level, get_slots(level) + 1)  if slot_check == True else ""}}
+-f "**Harness Divine Power** | As a bonus action, you touch your holy symbol, utter a prayer, and regain one expended spell slot, the level of which can be no higher than half your proficiency bonus (rounded up). The number of times you can use this feature is based on the level you’ve reached in this class: 2nd level, once; 6th level, twice; and 18th level, thrice. You regain all expended uses when you finish a long rest."
+-f "{{"Spell Slots (+1)" if  slot_check == True else "Spell Slots"}}| {{slots_str(level) }}"
+-f "{{counter}}|{{'◉'*get_cc(counter) + '〇'*(get_cc_max(counter)-get_cc(counter)) if slot_check == True else '◉'*get_cc(counter)}}"
+-footer "{{"Cleric | TCoE 30 | Known bug: Use after false use works, but cannot display" }}" 
+-color 8a496b
+-thumb <image>
