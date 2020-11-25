@@ -1,0 +1,15 @@
+!alias barbwm embed {{effects = load_json(get_gvar('d146f6a0-35c7-486f-a675-26242eee1e5d'))}}
+{{surgeRoll = vroll('1d8')}}
+{{effect = effects[surgeRoll.total-1]}}
+-f "Roll|{{surgeRoll}}"
+-f "Effect|{{effect.replace('saving throw', f'saving throw (DC {constitutionMod+proficiencyBonus+8})')}}"
+-title "<name>'s rage activates a Wild Surge!"
+{{c = combat()}}
+
+{{(c.me.add_effect('Wild Surge (Teleport)','',-1) if surgeRoll.total == 2 else c.me.add_effect('Wild Surge (Shroud)', f"-ac +2 -attack '|{constitutionMod-int(c.me.get_effect('Rage').effect.d)}[force]|Whenever a creature within 10 feet of you hits you with an attack, that creature takes force damage equal to your Constitution modifier.'", -1) if surgeRoll.total == 4 else c.me.add_effect('Wild Surge (Difficult Terrain)','',-1) if surgeRoll.total == 5 else c.me.add_effect('Wild Surge (Shadow Weapon)','',-1) if surgeRoll.total == 7 else '') or (f'-f "{name}|Effect: {c.me.get_effect("Surge")}"' if surgeRoll.total in [2, 4, 5, 7] else '') if c and c.me else ""}}
+{{e1, e1temp, e358 = vroll('1d12'), vroll('1d12'), vroll('1d6')}}
+{{set_temphp(e1temp.total) if surgeRoll.total == 1 else ""}}
+{{f' -f "Damage| {e1} Necrotic"' if surgeRoll.total == 1 else  f' -f "Damage| {e358} Force"' if surgeRoll.total in [3, 5] else f' -f "Damage| {e358} Radiant"' if surgeRoll.total == 8 else ""}}
+{{f' -f "Hit Points| {get_hp()}/{hp} ({get_temphp()} temp)"' if  surgeRoll.total == 1 else ""}}
+-color <color>
+-thumb <image>
