@@ -22,3 +22,9 @@
 -f "Sleight Of Hand| {{c.total}}"
 -f "{{"you got fish!" if (a.total)>10 and (b.total)>10 and (c.total)>10 else "better luck next time"}}"
 -thumb
+
+!alias fight embed
+{{a, b= roll("1d20"), roll("1d20")}}
+-title "<name> gets in a fight with Avrae!"
+-desc "<name> {{a}}, Avrae {{b}}"
+-color <color> -thumb https://cdn.discordapp.com/attachments/734756707343007779/741311485577396284/tenor.gif
