@@ -1,0 +1,14 @@
+!alias marineLayer embed
+{{lvl=int(PaladinLevel)}}
+{{cc="Channel Divinity"}}
+{{counter = cc }}
+{{mod_cc(cc, -1, True) if lvl else 0}}
+{{combat().me.add_effect("Heavily Obscured","",100) if combat() and combat().me else ''}}
+-title "<name> Uses {{cc}}: Marine Layer."
+-desc "As an action you can channel the sea to create a thick cloud of fog that surrounds you and heavily obscures the area for 20 feet in all directions, following you as you move. You and all creatures within 5 feet of you instead treat this fog as lightly obscured. This fog lasts for 10 minutes, spreads around corners and cannot be dispersed.
+
+You can end this effect on your turn as part of any other action. If you are no longer holding or carrying this weapon, or if you fall unconscious, this effect ends."
+-f "{{counter}}|{{'◉'*get_cc(counter) + '〇'*(get_cc_max(counter)-get_cc(counter))}}"
+-footer "Paladin | Oath of the Open Sea"
+-color <color> 
+-thumb <image>
