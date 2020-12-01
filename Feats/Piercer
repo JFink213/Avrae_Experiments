@@ -1,0 +1,3 @@
+!snippet piercerC -d 1d8 -f "**Piercer**|When you score a critical hit that deals piercing damage to a creature, you can roll one additional damage die when determining the extra piercing damage the target takes."
+
+!snippet piercerD ro<3 "Piercer|Once per turn, when you hit a creature with an attack that deals piercing damage, you can reroll one of the attack’s damage dice, and you must use the new roll."
