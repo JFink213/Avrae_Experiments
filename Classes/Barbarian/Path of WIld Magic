@@ -54,3 +54,5 @@ Roll a d3. The creature regains one expended spell slot, the level of which equa
 -f "Max Spell Slot Restore| {{droll}}"
 -f "{{counter}}|{{'◉'*get_cc(counter) + '〇'*(get_cc_max(counter)-get_cc(counter))}}"
 -footer "Barbarian| TCoE" -color <color> -thumb <image>
+
+!snippet bolstered -b "d3"
