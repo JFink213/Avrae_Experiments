@@ -21,3 +21,19 @@
 -desc "As an action, you can open your awareness to the presence of concentrated magic. Until the end of your next turn, you know the location of any spell or magic item within 60 feet of you that isn’t behind total cover. When you sense a spell, you learn which school of magic it belongs to."
 -f "{{counter}}|{{'◉'*get_cc(counter) + '〇'*(get_cc_max(counter)-get_cc(counter))}}"
 -footer "Note: Magic Awareness is not Identify"
+
+!alias bolstMagic embed
+{{lvl=int(BarbarianLevel)}}
+{{a,c  = argparse(&ARGS&), combat()}}
+{{target = a.last("t")}}
+{{combatant =c.get_combatant(target)}}
+{{cc="Bolstering Magic"}}
+{{counter = cc }}
+{{mod_cc(cc, -1, True) if lvl >= 6 else 0}}
+{{combat().get_combatant(target).add_effect("Bolstered","-b 1d3",100) if combat() else ''}}
+-title "<name> Uses {{cc}} to enhance {{target}}"
+-desc "You can harness your wild magic to bolster yourself or a companion. As an action, you can touch one creature (which can be yourself) and confer one of the following benefits of your choice to that creature:
+
+For 10 minutes, the creature can roll a d3 whenever making an attack roll or an ability check and add the number rolled to the d20 roll."
+-f "{{counter}}|{{'◉'*get_cc(counter) + '〇'*(get_cc_max(counter)-get_cc(counter))}}"
+-footer "Barbarian| TCoE" -color <color> -thumb <image>
