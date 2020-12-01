@@ -1,0 +1,28 @@
+Blessing of the Trickster
+
+!alias BotTApply embed 
+{{lvl = int(ClericLevel)}}
+{{a,c  = argparse(&ARGS&), combat()}}
+{{target = a.last("t")}}
+{{combatant =c.get_combatant(target)}}
+-title "{{f"{name} {'invokes the blessing of the Trickster on'} their ally!"}}"
+{{c.get_combatant(target).add_effect("Blessing of the Trickster","", 600) if lvl else ''}} 
+-desc "<name> raises their holy symbol and utters a word to their god invoking a blessing on their ally for the next hour, or until they bless someone else."
+-f "Blessing of the Trickster|Starting when you choose this domain at 1st level, you can use your action to touch a willing creature other than yourself to give it advantage on Dexterity (Stealth) checks. This blessing lasts for 1 hour or until you use this feature again"
+-color <color>
+-image <image>
+
+!alias BotT check stealth adv -title "<name> is blessed by the Trickster and slinks into the shadows" -f "Blessing of the Trickster|Starting when you choose this domain at 1st level, you can use your action to touch a willing creature other than yourself to give it advantage on Dexterity (Stealth) checks. This blessing lasts for 1 hour or until you use this feature again"
+
+!alias invokeDup embed
+{{lvl=int(ClericLevel)}}
+{{cc="Channel Divinity"}}
+{{counter = cc }}
+{{mod_cc(cc, -1, True) if lvl else 0}}
+{{combat().me.add_effect("Duplicated","",10) if combat() and combat().me else ''}}
+-title "<name> Uses {{cc}}: Invoke Duplicity."
+-desc "As an action, you create a perfect illusion of yourself that lasts for 1 minute, or until you lose your concentration (as if you were concentrating on a spell). The illusion appears in an unoccupied space that you can see within 30 feet of you. As a bonus action on your turn, you can move the illusion up to 30 feet to a space you can see, but it must remain within 120 feet of you.
+
+For the duration, you can cast spells as though you were in the illusion's space, but you must use your own senses. Additionally, when both you and your illusion are within 5 feet of a creature that can see the illusion, you have advantage on attack rolls against that creature, given how distracting the illusion is to the target."
+-f "{{counter}}|{{'◉'*get_cc(counter) + '〇'*(get_cc_max(counter)-get_cc(counter))}}"
+-footer "Cleric| PHB 63" -color <color> -thumb <image>
