@@ -1,0 +1,6 @@
+!snippet tele {{counter = "Telepathic" }}
+{{v=cc_exists(counter) and get_cc(counter)}}
+{{"-i" if v else ''}}
+{{ mod_cc(counter,-1, True) if v == True else 0}} 
+-f "**Telepathic Feat**|You can cast the Detect Thoughts spell without burning a spell slot."
+-f '{{f"Telepathic (-1)| {cc_str(counter)}" if v else "**Telepathic** | Already used this feat, rest before using again" }}'
