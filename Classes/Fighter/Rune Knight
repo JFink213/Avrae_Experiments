@@ -1,0 +1,17 @@
+!alias giants embed <drac2>
+base = f' -color {color} -thumb {image} -desc "You have learned how to imbue yourself with the might of giants. As a bonus action, you magically gain the following benefits, which last for 1 minute: \n \n - If you are smaller than Large, you become Large, along with anything you are wearing. If you lack the room to become Large, your size doesn\'t change.\n - You have advantage on Strength checks and Strength saving throws. \n - Once on each of your turns, one of your attacks with a weapon or an unarmed strike can deal an extra 1d6 damage to a target on a hit.\n \n You can use this feature a number of times equal to your proficiency bonus, and you regain all expended uses of it when you finish a long rest." '
+cc = "Giant's Might"
+
+v = character().cc_exists(cc) and int(character().levels.get("Fighter",0)) >= 3
+if v:
+  character().mod_cc(cc,-1,False)
+  base += f' -title "{name} Uses their giants might and becomes large." '
+  base += f' -f "Remaining uses of Giants Might|{character().cc_str(cc)} (-1)" '
+  base += f' -footer "Class feature | TCoE 45" '
+else:
+  err(f' "You do not have this ability" ')
+if combat() and combat().me:
+  combat().me.add_effect("Giant's Might", "Damage bonus: 1d6, advantage on Strength checks and saving throws.", 10)
+  base += f' -f "{name}|Damage bonus: 1d6, advantage on Strength checks and saving throws." '
+return base
+</drac2>
