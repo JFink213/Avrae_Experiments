@@ -1,0 +1,12 @@
+!alias createPoisonerKit embed 
+{{create_cc("Poisoner's Kit'", 0, 10, None, "bubble")}}
+{{set_cc("Poisoner's Kit'", 1)}}
+-title "<name> equips a Poisoner's Kit"
+-f "Poisoner's Kit"|{{cc_str("Poisoner's Kit'")}}
+-f "**Poisoner's Kit**|A poisoner's kit includes the vials, chemicals, and other equipment necessary for the creation of poisons. Proficiency with this kit lets you add your proficiency bonus to any ability checks you make to craft or use poisons."
+
+!alias addPoisonerKit embed
+{{mod_cc("Poisoner's Kit'", %1%,True)}}
+-title "<name> adds %1% Poisoner's Kit to their bag"
+-f "Poisoner's Kit"|{{cc_str("Poisoner's Kit'")}}
+-f "**Poisoner's Kit**|A poisoner's kit includes the vials, chemicals, and other equipment necessary for the creation of poisons. Proficiency with this kit lets you add your proficiency bonus to any ability checks you make to craft or use poisons."
