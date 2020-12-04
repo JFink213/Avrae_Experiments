@@ -15,3 +15,36 @@ if combat() and combat().me:
   base += f' -f "{name}|Damage bonus: 1d6, advantage on Strength checks and saving throws." '
 return base
 </drac2>
+
+!alias inscribeFireRune embed
+{{cc = "Fire Rune "}}
+{{v=cc_exists(cc) and get_cc(cc)}}
+{{mod_cc(cc, -1) if v else ''}}
+-f "**Rune Carver: Fire Rune**|Whenever you finish a long rest, you can touch a number of objects equal to the number of runes you know, and you inscribe a different rune onto each of the objects. To be eligible, an object must be a weapon, a suit of armor, a shield, a piece of jewelry, or something else you can wear or hold in a hand. Your rune remains on an object until you finish a long rest, and an object can bear only one of your runes at a time."
+-f "Rune Carver: Fire Rune{{" (-1)" if v else ''}}|{{cc_str(cc)}}"
+-footer "Rune Knight Class Feat| TCoE 45"
+
+!snippet fireRuneTool {{cc = "Fire Rune "}}
+{{v=cc_exists(cc) and get_cc(cc)<1}}
+{{f' -b {proficiencyBonus}"[proficient]"' if v else f' -phrase "You have not inscribed this rune to an item after your rest"'}}
+-f "**Rune Carver: Fire Rune**|This rune's magic channels the masterful craftsmanship of great smiths. While wearing or carrying an object inscribed with this rune, your proficiency bonus is doubled for any ability check you make that uses your proficiency with a tool."
+-footer "Rune Knight Class Feat| TCoE 45"
+
+!alias fireRuneStrike embed
+{{cc = "Fire Rune "}}
+{{v=cc_exists(cc) and get_cc(cc)<1}}
+{{a,c  = argparse(&ARGS&), combat()}}
+{{target = a.last("t")}}
+{{combatant =c.get_combatant(target)}}
+{{dc = 8 + proficiencyBonus + constitutionMod}}
+{{d = "2d6[fire]"}}
+{{value= combatant.save("str").total}}
+{{c.get_combatant(target).add_effect("Restrained","",10,False,None,False,"Firey Shackles: While restrained by the shackles, the target takes 2d6 fire damage at the start of each of its turns. The target can repeat the saving throw at the end of each of its turns, banishing the shackles on a success.") if v and value<=dc else ''}}
+{{droll = combatant.damage(d).damage if v else "You have not inscribed this rune to an item after your rest"}}
+-title "{{f" {name} {'calls upon fiery shackles to restrict their foe' if v else 'tries to call upon firey shackles to restrict their foe'} with their %1%!"}}"
+-phrase "when you hit a creature with an attack using a weapon, you can invoke the rune to summon fiery shackles: the target takes an extra 2d6 fire damage, and it must succeed on a Strength saving throw or be restrained for 1 minute. While restrained by the shackles, the target takes 2d6 fire damage at the start of each of its turns. The target can repeat the saving throw at the end of each of its turns, banishing the shackles on a success."
+-f "{{f" Damage|{droll}"}}"
+-f "Rune Save DC| {{dc}}"
+-f "{{combatant.name}} save DC| {{value}}"
+-f "{{f" {combatant}" }}"
+-footer "Rune Knight Class Feat| TCoE 45"
