@@ -1,0 +1,38 @@
+!alias createPotentPoison embed
+{{cc = "Potent Poison"}}
+{{CC = "Poisoner's Kit"}}
+{{q = proficiencyBonus}}
+{{v=cc_exists(CC) and get_cc(CC)}}
+{{create_cc(cc, minVal = 0, maxVal = q, dispType = 'bubble') if v else ""}}
+-f "Potent Poison"|{{cc_str(cc) if v else cc_str(CC)}}
+-f "**Poisoner Feat**|You gain proficiency with the Poisoner's Kit if you don't already have it. With one hour of work using a poisoner's kit and expending 50 gp worth of materials, you can create a number of doses of potent poison equal to your proficiency bonus."
+-f "Poisoner Feat| TCoE 80"
+
+!alias applyPotentPoison embed
+{{p = cc_exists("Potent Poison") and get_cc("Potent Poison")}}
+{{x = get_cc("Potent Poison")}}
+{{"" if x < 1 else (mod_cc("Potent Poison", -1, True))}}
+{{f''' -title "{name} forgot to restore their Potent Poison Supply."''' if not p else f'''-title "{name} uses a vial of Potent Poison on their weapon!" '''}}
+{{combat().me.add_effect("Potent Poison","",10, False, None, False, "deals 2d8 damage to an enemy if they fail a Con save of DC14") if p and combat() and combat().me else ''}}
+-f "Potent Poison{{"(-1)" if p else ''}}|{{cc_str("Potent Poison")}}"
+-f "Poisoner Feat|Once applied to a weapon or piece of ammunition, the poison retains its potency for 1 minute or until you hit with the weapon or ammunition."
+-footer "Poisoner Feat| TCoE 80"
+
+!alias hitPotentPoison embed
+{{a,c  = argparse(&ARGS&), combat()}}
+{{target = a.last("t")}}
+{{combatant =c.get_combatant(target)}}
+{{dc = 14}}
+{{d = "2d8" + "[poison]"}}
+{{f''' -title "{name} strikes their foe with a poisioned weapon!"'''}}
+{{value = combatant.save("con").total}}
+{{combat().me.remove_effect("Potent Poison") if combat() and combat().me else ''}}
+{{c.get_combatant(target).add_effect("Poisoned","",1) if value <= dc else ''}}
+{{droll = combatant.damage(d).damage if value <= dc else "Target did not take damage"}}
+-f "Posioner Save DC| {{dc}}"
+-f "{{f" {combatant.name} Con Save|{value}"}}"
+-f "{{f" Damage if failed|{droll}"}}"
+-f "{{f" Effect Status|{combatant.name} is Poisoned" if value <= dc else f"{combatant.name} is not Poisoned"}}"
+-f "{{f" Target Status|{combatant}" }}"
+-f "Poisoner Feat|When a creature takes damage from the coated weapon or ammunition, that creature must succeed on a DC 14 Constitution saving throw or take 2d8 poison damage and become poisoned until the end of your next turn."
+-footer "Poisoner Feat| TCoE 80"
