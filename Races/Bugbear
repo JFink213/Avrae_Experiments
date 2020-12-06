@@ -1,0 +1,17 @@
+!snippet surpriseAttack {{cc = "Surprise Attack"}}
+{{v = get_cc(cc)  and cc_exists(cc)}}
+{{mod_cc(cc, -1, True) if v else ""}}
+{{ '-d 2d6' if v else ""}}
+-title "{{ f" [name] {'surprises their target dealing immense extra damage' if v else 'attacks their target'} using their [aname]!"}}"
+-f '{{cc}}{{"(-1)" if v else ""}}| {{cc_str(cc)}}'
+-f "**Surprise Attack**|If you surprise a creature and hit it with an attack on your first turn in combat, the attack deals an extra 2d6 damage to it. You can use this trait only once per combat."
+-footer "Bugbear Racial Feat"
+
+!alias surpriseAttackReset embed
+{{cc = "Surprise Attack"}}
+{{v = get_cc(cc) < 1  and cc_exists(cc)}}
+{{mod_cc(cc, 1, True) if v else ""}}
+-title "{{ f" {name} {'exits combat restoring their ability' if v else 'is already ready to use this ability'}"}}"
+-f '{{cc}}{{"(-1)" if v else ""}}| {{cc_str(cc)}}'
+-f "**Surprise Attack**|If you surprise a creature and hit it with an attack on your first turn in combat, the attack deals an extra 2d6 damage to it. You can use this trait only once per combat."
+-footer "Bugbear Racial Feat"
