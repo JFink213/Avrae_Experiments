@@ -1,0 +1,16 @@
+!alias felineAg embed
+{{counter="Feline Agility"}} 
+{{mod_cc(counter, -1, True)}}
+ -title "<name> uses their natural {{counter}}!" 
+-desc "Your reflexes and agility allow you to move with a burst of speed. When you move on your turn in combat, you can double your speed until the end of the turn. Once you use this trait, you can’t use it again until you move 0 feet on one of your turns."
+-f "{{counter}}|{{'◉'*get_cc(counter) + '〇'*(get_cc_max(counter)-get_cc(counter))}}"
+-footer "Tabaxi Racial Feat" -color <color> -thumb <image>
+
+!alias felineAgRest embed
+{{counter="Feline Agility"}} 
+{{mod_cc(counter, 1, True)}}
+ -title "<name> rests their movement this turn regaining their {{counter}}!" 
+-desc "Your reflexes and agility allow you to move with a burst of speed. When you move on your turn in combat, you can double your speed until the end of the turn. Once you use this trait, you can’t use it again until you move 0 feet on one of your turns."
+-f "{{counter}}|{{cc_str(counter)}}"
+-footer "Tabaxi Racial Feat" -color <color> -thumb <image>
+
