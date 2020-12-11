@@ -54,7 +54,8 @@ return out
 
 !alias harnessDivinePower embed
 {{ level = %1%}}
-{{lvl=int(ClericLevel)}}
+{{useCleric=exists("ClericLevel")}}
+{{lvl=int(ClericLevel) if useCleric else int(PaladinLevel)}}
 {{counter="Harness Divine Power"}}
 {{ slot_check = level <= ceil(proficiencyBonus/2)}}
 {{mod_cc(counter, -1, True) if slot_check == True else mod_cc(counter, 0, True)}}
@@ -64,6 +65,6 @@ return out
 -f "**Harness Divine Power** | As a bonus action, you touch your holy symbol, utter a prayer, and regain one expended spell slot, the level of which can be no higher than half your proficiency bonus (rounded up). The number of times you can use this feature is based on the level you’ve reached in this class: 2nd level, once; 6th level, twice; and 18th level, thrice. You regain all expended uses when you finish a long rest."
 -f "{{"Spell Slots (+1)" if  slot_check == True else "Spell Slots"}}| {{slots_str(level) }}"
 -f "{{counter}}|{{'◉'*get_cc(counter) + '〇'*(get_cc_max(counter)-get_cc(counter)) if slot_check == True else '◉'*get_cc(counter)}}"
--footer "{{"Cleric | TCoE 30 | Known bug: Use after false use works, but cannot display" }}" 
+-footer "{{"Cleric or Paladin | TCoE | Known bug: Use after false use works, but may not display" }}" 
 -color 8a496b
 -thumb <image>
