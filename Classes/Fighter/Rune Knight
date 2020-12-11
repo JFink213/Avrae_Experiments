@@ -48,3 +48,37 @@ return base
 -f "{{combatant.name}} save DC| {{value}}"
 -f "{{f" {combatant}" }}"
 -footer "Rune Knight Class Feat| TCoE 45"
+
+
+!alias frostRuneCheck embed
+{{args= "&ARGS&"}}
+{{an, i = "animal" in args, "intimidation" in args}}
+{{cc = "Rune Carver"}}
+{{v=cc_exists(cc) and get_cc(cc)<=(get_cc_max(cc)-1)}}
+{{set ("b", get_raw().skills.animalHandling if an else get_raw().skills.intimidation if i else '')}}
+{{ sroll = ("2d20kh1+" if v else "1d20+") +(str(b)) }}
+{{ check = vroll(sroll) }}
+-title "{{f" {name} uses their Frost rune to enhance their {'Animal Handling' if an else 'Intimidation'} skill." if v else "You have not carved this rune yet today."}}"
+-desc "**Rune Carver: Frost Rune:** This rune's magic evokes the might of those who survive in the wintry wilderness, such as frost giants. While wearing or carrying an object inscribed with this rune, you have advantage on Wisdom (Animal Handling) checks and Charisma (Intimidation) checks."
+-f "{{f" {'Animal Handling' if an else 'Intimidation'}|{check}"}}"
+-footer "Rune Knight Class Feat| TCoE 45"
+
+
+!alias frostRuneSturdy embed
+{{args  = argparse(&ARGS&)}}
+{{cc = "Frost Rune"}}
+{{s, h, sv = "str" in args, "con" in args, "save" in args}}
+{{v=cc_exists(cc) and get_cc(cc)}}
+{{mod_cc(cc, -1) if v else ''}}
+{{bonus = 2}}
+-title "{{f" {name} uses their Frost rune to enhance their {'Strength' if s else 'Constitution'} {'save' if sv else 'check'}." if v else "You cannot use this ability again until you take a rest."}}"
+{{sroll = (("1d20+")+str(strengthSave+bonus)) if v and s and sv else (("1d20+") +str(strengthMod+bonus)) if v and s and not sv else (("1d20+") +str(constitutionSave+bonus)) if v and h and sv else (("1d20+") +str(constitutionMod+bonus)) if v and h and not sv else ""}}
+{{check = vroll(sroll) }}
+{{combat().me.add_effect("Sturdy","",100,False,None,False,"you have +2 bouns on strength and constitution checks and saves") if v and combat() and combat().me else ''}}
+-desc "**Rune Carver: Frost Rune**: you can invoke the rune as a bonus action to increase your sturdiness. For 10 minutes, you gain a +2 bonus to all ability checks and saving throws that use Strength or Constitution. Once you invoke this rune, you can't do so again until you finish a short or long rest."
+-f "{{f" {'Strength' if s else 'Constitution'}{'save' if sv else ''}|{check}"}}"
+-f "{{cc}}|{{cc_str(cc)}}"
+-f "Rune Knight Class Feat| TCoE 45"
+-footer "!frostRuneSturdy [str|con] save"
+
+!snippet fRS -b 2 -f "**Rune Carver: Frost Rune**|you can invoke the rune as a bonus action to increase your sturdiness. For 10 minutes, you gain a +2 bonus to all ability checks and saving throws that use Strength or Constitution. Once you invoke this rune, you can't do so again until you finish a short or long rest."
