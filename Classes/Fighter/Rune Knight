@@ -82,3 +82,16 @@ return base
 -footer "!frostRuneSturdy [str|con] save"
 
 !snippet fRS -b 2 -f "**Rune Carver: Frost Rune**|you can invoke the rune as a bonus action to increase your sturdiness. For 10 minutes, you gain a +2 bonus to all ability checks and saving throws that use Strength or Constitution. Once you invoke this rune, you can't do so again until you finish a short or long rest."
+
+!alias cloudRuneCheck embed
+{{args= "&ARGS&"}}
+{{sl, d = "sleight" in args, "deception" in args}}
+{{cc = "Rune Carver"}}
+{{v=cc_exists(cc) and get_cc(cc)<=(get_cc_max(cc)-1)}}
+{{set ("b", get_raw().skills.sleightOfHand if sl else get_raw().skills.deception if d else '')}}
+{{ sroll = ("2d20kh1+" if v else "1d20+") +(str(b)) }}
+{{ check = vroll(sroll) }}
+-title "{{f" {name} uses their Cloud rune to enhance their {'Sleight of Hand' if sl else 'Deception'} skill." if v else "You have not carved this rune yet today."}}"
+-desc "**Rune Carver: Cloud Rune:** This rune emulates the deceptive magic used by some cloud giants. While wearing or carrying an object inscribed with this rune, you have advantage on Dexterity (Sleight of Hand) checks and Charisma (Deception) checks."
+-f "{{f" {'Sleight of Hand' if sl else 'Deception'}|{check}"}}"
+-footer "Rune Knight Class Feat| TCoE 45"
