@@ -1,0 +1,16 @@
+!alias CotW embed
+{{c = "Call of the Wave"}}
+{{(create_cc(c, reset="long", maxVal="1", minVal="0", dispType="bubble"), set_cc(c,1, True))  if not cc_exists(c) else ""}}
+{{v = cc_exists(c) and get_cc(c)}}
+{{mod_cc(c, -1, True) if v else 0}}
+{{'cast "Create or Destroy water" -l 2 -i' if v else "You have already used this feature today"}}
+-title "<name> uses their abilities natural to their race to cast Create or Destroy Water!"
+-desc "**Create or Destroy Water:** You either create or destroy water.
+
+**Create Water.** You create up to 20 gallons of clean water within range in an open container. Alternatively, the water falls as rain in a 30-foot cube within range, extinguishing exposed flames in the area.
+
+**Destroy Water.** You destroy up to 20 gallons of water in an open container within range. Alternatively, you destroy fog in a 30-foot cube within range."
+-f "{{c}}|{{cc_str(c)}}"
+-footer "Water Genasi Racial Trait"
+-color #color
+-thumb <image>
