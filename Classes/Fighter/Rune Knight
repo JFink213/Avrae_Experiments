@@ -16,6 +16,8 @@ if combat() and combat().me:
 return base
 </drac2>
 
+!snippet giants -d 1d6 -f  "**Giant's Might**|Once on each of your turns, one of your attacks with a weapon or an unarmed strike can deal an extra 1d6 damage to a target on a hit."
+
 !alias inscribeFireRune embed
 {{cc = "Fire Rune "}}
 {{v=cc_exists(cc) and get_cc(cc)}}
