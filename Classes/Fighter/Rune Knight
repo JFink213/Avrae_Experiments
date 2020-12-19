@@ -121,3 +121,46 @@ return base
 -f "Rune Knight Class Feat| TCoE 45"
 -footer "!cloudRuneInvoke #amtToHit #damageAmt T1 T2"
 -color e8fffd -thumb <thumb>
+
+!alias stormRuneInvoke embed
+{{args, c  = argparse(&ARGS&), combat()}}
+{{t = args.last("t") if "t" in args else name}}
+{{C = c.get_combatant(t) if c else""}}
+{{cc = "Storm Rune"}}
+{{v=cc_exists(cc) and get_cc(cc)}}
+{{mod_cc(cc, -1) if v else ''}}
+-title "{{f" {name} uses their Storm Rune to enter a prophetic state and change the near future." if v else "You cannot use this ability again until you take a rest."}}"
+-desc "you can invoke the rune as a bonus action to enter a prophetic state for 1 minute or until you're incapacitated. Until the state ends, when you or another creature you can see within 60 feet of you makes an attack roll, a saving throw, or an ability check, you can use your reaction to cause the roll to have advantage or disadvantage. Once you invoke this rune, you can't do so again until you finish a short or long rest."
+{{f"-f '{cc}|{cc_str(cc)}'" if cc_exists(cc) else ""}}
+-footer "Rune Knight Class Feat| TCoE 45"
+{{C.add_effect("Cloud Rune",'',10, False, None, False, "you can use your reaction to cause the roll to have advantage or disadvantage.") if v and C else ""}}
+{{f'-f "Effect|{C.get_effect("Cloud Rune")}"' if v and C else ""}}
+
+!alias stormRuneCheck embed
+{{args= "&ARGS&"}}
+{{cc = "Rune Carver"}}
+{{v=cc_exists(cc) and get_cc(cc)<=(get_cc_max(cc)-1)}}
+{{set ("b", get_raw().skills.arcana if v else '')}}
+{{ sroll = ("2d20kh1+" if v else "1d20+") +(str(b)) }}
+{{ check = vroll(sroll) }}
+-title "{{f" {name} uses their Storm Rune to enhance their skill in arcana." if v else "You have not carved this rune yet today."}}"
+-desc "**Rune Carver: Storm Rune:** Using this rune, you can glimpse the future like a storm giant seer. While wearing or carrying an object inscribed with this rune, you have advantage on Intelligence (Arcana) checks, and you can't be surprised as long as you aren't incapacitated."
+-f "{{f" Arcana|{check}"}}"
+-footer "Rune Knight Class Feat| TCoE 45"
+
+!alias hillRuneRes embed
+{{args, c  = argparse(&ARGS&), combat()}}
+{{t = args.last("t") if "t" in args else name}}
+{{C = c.get_combatant(t) if c else""}}
+{{cc = "Hill Rune"}}
+{{v=cc_exists(cc) and get_cc(cc)}}
+{{mod_cc(cc, -1) if v else ''}}
+{{r = ["bludgeoning", "slashing", "piercing"] if v else []}}
+-title "{{f" {name} uses their Hill Rune to enhance their resistance to common damage." if v else "You cannot use this ability again until you take a rest."}}"
+-desc "You can invoke the rune as a bonus action, gaining resistance to bludgeoning, piercing, and slashing damage for 1 minute. Once you invoke this rune, you can’t do so again until you finish a short or long rest."
+{{f"-f '{cc}|{cc_str(cc)}'" if cc_exists(cc) else ""}}
+-footer "Rune Knight Class Feat| TCoE 45"
+{{j=C.resists.immune if C else ""}}
+{{T=["-resist "+x for x in r if x not in j]}}
+{{C.add_effect("Resistance",f'{" ".join(T)}',10) if v and C else ""}}
+{{f'-f "Effect|{C.get_effect("Resistance")}"' if v and C else ""}}
