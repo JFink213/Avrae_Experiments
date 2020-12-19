@@ -1,0 +1,65 @@
+!alias elementGift embed
+{{a, c = argparse(&ARGS&), combat()}}
+#ensuring warlock == true
+{{useWarlock=exists("WarlockLevel")}}
+{{lvl=int(WarlockLevel)}}
+{{counter="Elemental Gift"}}
+{{v = cc_exists(counter) and get_cc(counter)}}
+{{mod_cc(counter, -1, True) if lvl>=6 and v else ""}}
+#combatant
+{{t = a.last("t") if "t" in a else name}}
+{{C = c.get_combatant(t) if c else""}}
+{{tname = C.name if C else t}}
+-title  "{{f'{tname} {"Uses their Elemental Gift to gain a Flying Speed" if v else "tries to use their Elemental Gift"}!'}}"
+-desc "<name> uses their <counter> to gain the ability to hover!"
+-f "**Elemental Gift**: as a bonus action, you can give yourself a flying speed of 30 feet that lasts for 10 minutes, during which you can hover. You can use this bonus action a number of times equal to your proficiency bonus, and you regain all expended uses when you finish a long rest."
+-f "{{counter}}|{{cc_str(counter)}}"
+{{C.add_effect('Hover',"",100) if v and C else ""}}
+{{f'-f "Effect|{C.get_effect("Hover")}"' if v and C else ""}}
+-f "Warlock Genie Patron| TCoE"
+-footer "!elementGift"
+-color 7220c9
+-thumb <image>
+
+!alias geniesVessel embed
+# set arguments and types
+{{a, c = argparse(&ARGS&), combat()}}
+{{o, u, r, b, s, l = "lamp" in a, "urn" in a, "ring" in a, "bottle" in a, "statue" in a, "lantern" in a}}
+{{set ("type", "Oil Lamp" if o else "Urn" if u else "Ring with Compartment" if r else "Stoppered Bottle" if b else "hollow Statuette" if s else "Ornate Lantern" if l else "")}}
+#ensuring warlock == true
+{{useWarlock=exists("WarlockLevel")}}
+{{lvl=int(WarlockLevel)}}
+{{counter="Genie's Vessel: Bottled Respite"}}
+{{v = cc_exists(counter) and get_cc(counter)}}
+{{mod_cc(counter, -1, True) if lvl and v else 0}}
+#combatant
+{{t = a.last("t") if "t" in a else name}}
+{{C = c.get_combatant(t) if c else""}}
+{{tname = C.name if C else t}}
+#hours
+{{h = proficiencyBonus*2 }}
+{{dur = h*600}}
+-title  "{{f'{tname} {"Uses their Bottled Respite to retreat to their Vessel" if v else "tries to use their Bottled Respite to retreat to their Vessel"}!'}}"
+-desc "<name> retreats into their vessel, that of a <type>!"
+-f "**Bottled Respite**. As an action, you can magically vanish and enter your vessel. The interior of the vessel is an extradimensional space in the shape of a 20-foot-radius cylinder, 20 feet high, and resembles your vessel. While inside, you can hear the area around your vessel as if you were in its space. You can remain inside the vessel up to a number of hours equal to twice your proficiency bonus. You exit the vessel early if you use a bonus action to leave, if you die, or if the vessel is destroyed. When you exit the vessel, you appear in the unoccupied space closest to it. Once you enter the vessel, you can’t enter again until you finish a long rest."
+-f "{{counter}}|{{cc_str(counter)}}"
+{{C.add_effect('Vesseled',"",dur) if v and C else ""}}
+{{f'-f "Effect|{C.get_effect("Vesseled")}"' if v and C else ""}}
+-f "Warlock Genie Patron| TCoE"
+-footer "!geniesVessel [lamp|urn|ring|bottle|statue|lantern]"
+-color 7220c9 -thumb <image>
+
+!snippet gw <drac2>
+p =  character().cvars.get("patron","")
+d =  { 
+    "Dao": "[bludgeoning]",
+    "Djinni": "[thunder]",
+    "Efreeti": "[fire]",
+    "Marid": "[cold]" 
+    }
+out = f'-d1 {proficiencyBonus}{d[p]} '
+return out
+
+# run `!cvar patron <patron>`, then you are all set to use this snippet.
+</drac2>
+-f "Genie's Wrath|Once during each of your turns when you hit with an attack roll, you can deal extra damage to the target equal to your proficiency bonus. The type of this damage is determined by your patron: bludgeoning (dao), thunder (djinni), fire (efreeti), or cold (marid)"
