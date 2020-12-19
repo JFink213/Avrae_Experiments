@@ -16,3 +16,7 @@
 {{f'-f "Effect|{C.get_effect("Rage")}"' if v and C else ""}}
 
 !snippet rage -d "{{2 if int(BarbarianLevel)<8 else (3 if int(BarbarianLevel)<15 else 4)}}"
+
+
+!snippet reckless adv -title "[name] attacks recklessly with [aname]!" {{combat().me.add_effect("Attacked Recklessly","",1) if combat() and combat().me else ''}}
+-f "**Reckless Attack**|Melee attacks this turn have advantage. All attacks made against you until the start of your next turn have advantage."
