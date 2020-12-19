@@ -1,0 +1,21 @@
+!alias naturesWrath embed
+{{a,c = argparse(&ARGS&), combat()}}
+{{target = a.last("t")}}
+{{combatant = c.get_combatant(target) if c and target else None}}
+{{lvl=int(PaladinLevel)}}
+{{cc="Channel Divinity"}}
+{{counter = cc }}
+{{mod_cc(cc, -1, True) if lvl>=3 else 0}}
+{{saveDc= 13}}
+{{value= combatant.save(max("str", "dex")).total if c and target else None}}
+{{c.get_combatant(target).add_effect("Restrained","",-1) if c and target and value<saveDc else None}}
+-title "**Channel Divinity: Nature's Wrath!**"
+-desc  {{f' "{name} Uses {cc}: Natures Wrath on {combatant.name}"' if c and target else f' "{name} Uses {cc}: Natures Wrath"'}}
+-f "As an action, you can cause spectral vines to spring up and reach for a creature within 10 feet of you that you can see. The creature must succeed on a Strength or Dexterity saving throw (its choice) or be restrained. While restrained by the vines, the creature repeats the saving throw at the end of each of its turns. On a success, it frees itself and the vines vanish."
+-f "Save DC| {{saveDc}}"
+{{f'-f " {combatant.name} save DC | {value}"' if c and target else  f'-f "Meta"' }}
+-f "{{f" {combatant}" }}"
+-f "{{counter}}|{{cc_str(counter)}}"
+-footer "Paladin | Oath of the Ancients"
+-color <color> 
+-thumb <image>
