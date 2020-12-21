@@ -1,0 +1,26 @@
+!alias quickHeal embed <drac2>
+ch, c, lvl, args = character(), combat(), int(get('MonkLevel')), argparse(&ARGS&)
+r = args.last("t") if "t" in args else name
+cc="Ki Points"
+C,v = c.get_combatant(r) if c else"", cc_exists(cc) and get_cc(cc)>=2
+tname = C.name if C else r
+die = "d4"
+heal = vroll(("1d4+") + str(proficiencyBonus))
+kiCost = 2
+f = "As an action, you can spend 2 ki points and roll a Martial Arts die. You regain a number of hit points equal to the number rolled plus your proficiency bonus."
+if lvl >= 3:
+    if v and c:
+        mod_cc(cc, -kiCost, True) if v else 0
+        mod_hp(heal.total,0)
+        return f''' -title "{tname} expends {kiCost} Ki to receive {heal.total} hp!" -desc "{f}" -f "{cc}|{ch.cc_str(cc)}" -f "Heal Amount|{heal}" -f "Current HP|{ch.hp_str()}" '''
+    if v and not c:
+        mod_cc(cc, -kiCost, True) if v else 0
+        return f''' -title "{tname} expends {kiCost} Ki to receive {heal.total} hp!" -desc "{f}" -f "{cc}|{ch.cc_str(cc)}" -f "Heal Amount|{heal}" '''
+    if not v:
+        return f''' -title "{tname} has expended all their Ki, a rest is needed before using this again!" -f "{cc}|{ch.cc_str(cc)}" '''
+    else:
+        return f''' -title "{tname} has reached an error state, please use a ``!rest short`` and try again." '''
+else:
+    return f''' -title "{tname} does not have this skill yet, either they are not a Monk, or have not reached level 3." '''
+</drac2>
+-footer "Monk | TCoE" -color <color> -thumb <image>
