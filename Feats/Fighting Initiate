@@ -1,0 +1,9 @@
+!snippet duel <drac2>
+f = character().cvars.get("fighting_initiate", "")
+g = character().cvars.get("fighting_style", "")
+l = int(get('FighterLevel',0))
+if "dueling" in f or g:
+     return f''' -d "2" -f "**Dueling:** When you are wielding a melee weapon in one hand and no other weapons, you gain a +2 bonus to damage rolls with that weapon." '''
+else:
+    return f'''  "If you have the Fighting Style of dueling, you must set your fighting style or fighting initiate style to dueling via ``!cvar fighting_style dueling`` or ``!cvar fighting_initiate dueling``" f'''
+</drac2>
