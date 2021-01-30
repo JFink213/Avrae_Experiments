@@ -46,3 +46,17 @@ Both damage rolls increase by 1d8 at 11th level and 17th level."
 -f "{{target2}}"
 -color 016302
 -thumb <image>
+
+
+!alias message embed <drac2>
+
+a = argparse(&ARGS&)
+
+f = "You point your finger toward a creature within range and whisper a message. The target (and only the target) hears the message and can reply in a whisper that only you can hear. You can cast this spell through solid objects if you are familiar with the target and know it is beyond the barrier. Magical silence, 1 foot of stone, 1 inch of common metal, a thin sheet of lead, or 3 feet of wood blocks the spell. The spell doesn't have to follow a straight line and can travel freely around corners or through openings."
+message = a.get('m')
+tname = a.last('t',name) if a.last('t') else 'their friend'
+
+
+return f''' -title "{name} casts message to {tname}" -desc "||{message}||" -f "**Message**|{f}" '''
+</drac2>
+-footer "!message -m 'message text' -t 'target name'"
