@@ -1,22 +1,217 @@
-!alias rage embed 
-{{args,ff=argparse(&ARGS&),"Fanatical Focus"}}
-{{i,c,cc,lvl,r,b=args.get("i"),combat(),"Rages" if cc_exists("Rages") else "Rage",int(get("BarbarianLevel",0)), args.last("t") if "t" in args else name,["acid","bludgeoning","cold","fire","force","lightning","necrotic","piercing","poison","radiant","slashing","thunder"] if "bear"==get("l3totem","").lower() else ["bludgeoning","piercing","slashing"]}}
-{{C,v=c.get_combatant(r) if c else"",(cc_exists(cc) and get_cc(cc)>0)or i or lvl>=20}}
-{{tname = C.name if C else r}}
--title "{{f'{tname} {"Rages" if v else "tries to Rage"}!'}}" 
--desc "{{"You have advantage on Strength checks and Strength saving throws, and are unable to cast or concentrate on spells. Your rage ends early if you are knocked unconscious or if your turn ends and you haven't attacked a hostile creature since your last turn or taken damage since then, or as a bonus action on your turn." if v else "You must finish a long rest before you can use this ability again." if cc_exists(cc) else f"""You do not have this ability {'(Missing a **c**ustom **c**ounter named `Rage`. See `!help cc create` for how to make one manually, or run the `!level` alias as a barbarian and it will make one for you.)' if lvl else ''}"""}}"
-{{mod_cc(cc,-1) if v and not i and lvl<20 else ""}} 
--f "Rages{{f" (-1)" if v and not i and lvl<20 else ""}}| {{"Unlimited"if lvl>=20 else cc_str(cc) if cc_exists(cc) else"*None*"}}" 
--footer "Barbarian | PHB 48" 
--color <color> 
-{{mod_cc(ff,1) if cc_exists(ff) else ""}}
-{{f"-f '{ff}|{cc_str(ff)}'" if cc_exists(ff) else ""}}
-{{t=C.resists.immune if C else ""}}
-{{T=["-resist "+x for x in b if x not in t]}}{{C.add_effect('Rage',f'-d {2+(lvl>8)+(lvl>15)} {" ".join(T)}',args.last("dur") if "dur" in args else 10) if v and C else ""}}
-{{f'-f "Effect|{C.get_effect("Rage")}"' if v and C else ""}}
+Barbarian class features
+1	Rage - seperate file
+1	Unarmored Defense - auto included
+2	Reckless Attack - coded
+2	Danger Sense - coded
+3	Primal Path - subclass
+4	Ability Score Improvement - auto included
+5	Extra Attack - auto included
+5	Fast Movement - auto included
+6	Primal Path Feature -subclass
+7	Feral Instinct - auto included
+8	Ability Score Improvement - auto included
+9	Brutal Critical - coded
+10	Primal Path Feature - subclass
+11	Relentless Rage - coded
+12	Ability Score Improvement - not code
+13	Brutal Critical  coded (in level 9)
+14	Primal Path Feature - subclass
+15	Persistent Rage - coded (included in rage alias)
+16	Ability Score Improvement - not code
+17	Brutal Critical - coded (in level 9)
+18	Indomitable Might - coded
+19	Ability Score Improvement - auto included
+20	Primal Champion - auto included
 
-!snippet rage -d "{{2 if int(BarbarianLevel)<8 else (3 if int(BarbarianLevel)<15 else 4)}}"
+# Reckless Attack - coded snippet -- !snippet reckless
+embed
+<drac2>
+cl,  lvlToRun = "Barbarian", 2
+foot    = load_json(get_gvar('452124fa-b879-4e46-be02-229167abe541')).cl.replace("{cl}",cl).replace("{name}",name).replace("{lvlToRun}",str(lvlToRun))
 
+c,lvl = combat(), get('BarbarianLevel',0)
+if lvl >= 2:
+    if c:
+        c.me.add_effect("Reckless Attack"," ",1, desc=f"Attack rolls against you have advantage.")
+    
+    return f'''adv -title "{name} attacks recklessly with [aname]!" -f "Reckless Attack| When you make your first attack on your turn, you can decide to attack recklessly. Doing so gives you advantage on melee weapon attack rolls using Strength during this turn, but attack rolls against you have advantage until your next turn." '''
+else:
+    return f'''-f "Reckless Attack|{foot}" '''
+</drac2>
+-footer "![i] a weapon reckless"
 
-!snippet reckless adv -title "[name] attacks recklessly with [aname]!" {{combat().me.add_effect("Attacked Recklessly","",1) if combat() and combat().me else ''}}
--f "**Reckless Attack**|Melee attacks this turn have advantage. All attacks made against you until the start of your next turn have advantage."
+#2	Danger Sense - coded snippet -- !snippet dangerSense
+embed <drac2>
+cl,  lvlToRun = "Barbarian", 2
+foot    = load_json(get_gvar('452124fa-b879-4e46-be02-229167abe541')).cl.replace("{cl}",cl).replace("{name}",name).replace("{lvlToRun}",str(lvlToRun))
+
+c,lvl = combat(), get('BarbarianLevel',0)
+if lvl >= 2:
+    if ctx.alias[0]=="s":
+        return f''' adv -title "{name} senses Danger!" -f "Danger Sense | You have advantage on Dexterity saving throws against effects that you can see, such as traps and spells. To gain this benefit, you can't be blinded, deafened, or incapacitated." '''
+    else:
+        return f''' -f "Error| Danger sense only applies to dex saves" '''    
+else:
+        return f'''-f "Danger Sense|{foot}" '''
+</drac2>
+
+# 9	Brutal Critical - coded --!alias brutalCrit
+embed
+<drac2> 
+cl,  lvlToRun = "Barbarian", 9
+foot    = load_json(get_gvar('452124fa-b879-4e46-be02-229167abe541')).cl.replace("{cl}",cl).replace("{name}",name).replace("{lvlToRun}",str(lvlToRun))
+lvl     = get('BarbarianLevel',0)
+a, out, c, ch, check = argparse(&ARGS&), [''], combat(), character(), False
+
+desc    = " -f \"Brutal Critical|Beginning at 9th level, you can roll one additional weapon damage die when determining the extra damage for a critical hit with a melee Attack. This increases to two additional dice at 13th level and three additional dice at 17th level.\" "
+footer  = " -footer \"!brutalCrit <attackName> -t [target]\" "
+
+#restriction check
+if lvl >= lvlToRun:
+	check = True
+else:
+	return f''' -f "{foot}" {footer} '''
+
+#let's proceed
+if check == True:
+    atk     = ""
+    attack  = "&1&" 
+    attacks = character().attacks
+    
+    #no atk input
+    if "&ARGS&" == "[]" or attack == "-t":
+        return f''' -title "Please input an attack name after the alias name!" -desc "Attack name input is required to make this alias work!\ni.e.: `!brutalCrit greataxe`\nThen you can continue write the target args right after if you wish to use it in init combat." {footer} '''
+
+    #search the matching attack input in user's attack list
+    atkList     = [] 
+    for att in attacks:
+        if  attack.lower() in att.name.lower():
+            atkList.append(att.name)
+            weapon  = att.name
+            atk     = att.raw.automation[0].effects[0].hit[0].damage 
+            atkDisp = "\n - ".join(atkList)
+    
+    if atkList == []:
+    #no attack/weapon match the input in the character atk list
+        return f''' -title "You don't have {attack} in your attack list!" -desc "Please check your character sheet and make sure the weapon is equipped, and update your character info with `!update` if you have the equipped the weapon." {footer} '''
+    elif len(atkList) > 1:
+    #multiple weapon found
+        return f''' -title "Your input matches to multiple attacks in your attack list!" -desc "Your input: {attack}\nMultiple matches:\n - {atkDisp}" {footer} '''
+    else:
+    #parse the texts and reconstructing the damage die
+        dieCount= "3d" if lvl >= 17 else "2d" if lvl >= 13 else "1d"
+        dieNum  = str(str(atk.split('d')[1]).split('+')[0])
+        dmgType = str(atk.split(' ')[1])
+        droll   = f'{dieCount}' + f'{dieNum}' + f'{dmgType}'
+        dmg     = vroll(droll)
+        
+        out.append(f''' -title "{name}\'s critical attack with a(n) {weapon} deals extra damage!" -desc "**Meta**\n**Damage**: {dmg}" {desc}{footer} ''')
+
+    if c and c.me and a.last('t'):
+    #combat init
+        target      = a.last('t') if a.last('t') else " "
+        combatant   = c.get_combatant(target)
+        dmg         = combatant.damage(droll)
+        chp         = f' {combatant}'
+        
+        out.append(f'''-desc "**{combatant.name}**\n{dmg.damage}" -f "{chp}"''')
+
+return '\n'.join(out)
+</drac2>
+-thumb <image>
+-color <color>
+
+# 11	Relentless Rage - coded -- !alias relentless
+<drac2>
+cl,  lvlToRun = "Barbarian", 11
+foot    = load_json(get_gvar('452124fa-b879-4e46-be02-229167abe541')).cl.replace("{cl}",cl).replace("{name}",name).replace("{lvlToRun}",str(lvlToRun))
+
+cn, ch, lvl, out ="Relentless Rage", character(), get('BarbarianLevel',0), []
+conSaveStr, m = '1d20+' + constitutionSave, ""
+conSave = vroll(conSaveStr)
+if lvl >=11:
+   ch.create_cc_nx(cn,0,None,'short', reset_to = 0)
+   if get_hp(): 
+      out.append(f'''embed -title "{name} tries to use their Relentless Rage" -desc "{name} has more than 0 hit points and can't use this feature" ''')
+      out.append(f''' -f "times {cn} has been used since your last short rest {get_cc(cn)}" ''')
+   else:
+        if combat():
+            if combat().me.get_effect("Rage"):
+                ch.mod_cc(cn,+1)
+                out.append("embed")
+                dc = 10 + get_cc(cn) *5 -5
+                if conSave.total >= dc:
+                    m = "Success"
+                    set_hp(1)
+                else:
+                    m = "Failure"
+                out.append(f'''embed -title "{name} uses their Relentless Rage"  -desc "**DC: {dc}** \n{conSave} \n{m} \n\n your rage can keep you fighting despite grievous wounds. If you drop to 0 hit points while you're raging and don't die outright, you can make a DC {dc} Constitution saving throw. If you succeed, you drop to 1 hit point instead. \n Each time you use this feature after the first, the DC increases by 5. When you finish a short or long rest, the DC resets to 10." ''')
+            else: 
+                out.append(f'''embed -title "{name} tries to use their Relentless Rage" -desc "{name} is not raging, and cannot use this feature" ''')
+        else: 
+                ch.mod_cc(cn,+1)
+                out.append("embed")
+                dc = 10 + get_cc(cn) *5 -5
+                if conSave.total >= dc:
+                    m = "Success"
+                    set_hp(1)
+                else:
+                    m = "Failure"
+                out.append(f'''embed -title "{name} uses their Relentless Rage"  -desc "**DC: {dc}** \n{conSave} \n{m} \n\n your rage can keep you fighting despite grievous wounds. If you drop to 0 hit points while you're raging and don't die outright, you can make a DC {dc} Constitution saving throw. If you succeed, you drop to 1 hit point instead. \n Each time you use this feature after the first, the DC increases by 5. When you finish a short or long rest, the DC resets to 10." ''')
+        out.append(f''' -f "times {cn} has been used since your last short rest {get_cc(cn)}" ''')
+else: 
+       out.append(f'''embed -f "{foot}" ''')
+return '\n '.join(out)
+</drac2>
+-footer "!relentless"
+-color <color>
+-thumb <image>
+
+18	Indomitable Might - coded -- !alias iMight
+embed
+<drac2> 
+cl,  lvlToRun = "Barbarian", 18
+foot    = load_json(get_gvar('452124fa-b879-4e46-be02-229167abe541')).cl.replace("{cl}",cl).replace("{name}",name).replace("{lvlToRun}",str(lvlToRun))
+
+lvl = get('BarbarianLevel',0)
+a, out, c, ch, check = argparse(&ARGS&), [''], combat(), character(), False
+
+desc    = " -f \"Indomitable Might|Beginning at 18th level, if your total for a Strength check is less than your Strength score, you can use that score in place of the total.\" "
+footer  = " -footer \"!iMight <skillName>\" "
+
+#restriction check
+if lvl >= 18:
+	check = True
+else:
+	return f''' -f "{foot}" {footer} '''
+
+if check == True:
+    skills  = "&1&"
+    adv,dis = "adv" in a and not "dis" in a, "dis" in a and not "adv" in a
+    sList   = ['Athletics', 'Strength']
+
+    skill   = ' '
+    for ski in sList: 
+        if skills.lower() in ski.lower():
+            skill = ski
+    
+    if skill == 'Athletics':
+        mod = get_raw().skills.athletics
+    elif skill == 'Strength':
+        mod = get_raw().skills.strength
+    else:
+        return f''' -title "You didn't input a valid strength based skill!" -desc "Please at least input the first three characters of a valid strength skill." {footer} '''
+        
+    check = vroll(("2d20kh1+" if adv else "2d20kl1+" if dis else "1d20+") +str(mod))
+    
+    if check.total < strength:
+        score   = strength
+    else:
+        score   = check
+    
+    return f''' -title "{name} makes a skill check!" -desc "**Skill Check**: {skill}\n{check}\n**Strength Score**: `{strength}`\n*{name}'s {skill} check result: **{score}***" {desc} {footer} '''
+
+</drac2>
+-color <color>
+-thumb <image>
+
