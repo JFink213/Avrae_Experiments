@@ -2,5 +2,76 @@
 3 Form of the Beast -- coded, included in rage
 6 Bestial Soul -- coded, included in rage 
 10 Infectious Fury -- auto included
-14 Call the Hunt -- NEEDS to be coded
-    Call the hunt extra damage snippet
+#14 Call the Hunt -- NEEDS to be coded
+embed <drac2>
+cl, sub, lvlToRun = "Barbarian", "Beast", 14
+foot = load_json(get_gvar('452124fa-b879-4e46-be02-229167abe541')).sc.replace("{cl}",cl).replace("{name}",name).replace("{lvlToRun}",str(lvlToRun)).replace("{sub}",sub)
+lvl, a, sc =  get('BarbarianLevel'), argparse(&ARGS&), load_json(get("subclass", "{}")).get("BarbarianLevel", "")
+num = max(constitutionMod,1)
+targets, c, out,  = a.get('t'), combat(), [], 
+ignore, cn = a.last('i',False), "Call the Hunt"
+
+if lvl >= lvlToRun and sub in sc:
+    thp = len(targets) * 5
+    if len(targets) >num:
+        out.append(f''' -f "Error| you cannot grant this benefit to more than {num} people." -footer "!callHunt -t one -t two" ''')
+        return ' \n'.join(out)
+    else:
+        out.append(f'-title "{name} calls others to join their hunt!" ')
+        desc = ""
+        if len(targets) == 0:
+            desc = "**Meta** \n**Effect**: Call The Hunt \n(no people specified)\n"
+        if c and c.me:
+            r = False   
+            for i in combat().me.effects:
+                if "Rage" in i.name:
+                    r = True
+            if r == False:
+                return f'''-f "You must be raging before using this ability. Use `!rage` to enter a rage" '''
+            else:
+                rage = c.me.get_effect("Rage")
+                for target in targets:
+                    targList = target.split('|')
+                    targComb = combat().get_combatant(targList[0])
+                    targName = targComb.name
+                    targComb.add_effect('Call the Hunt',"",1, desc = "Until the rage ends, the chosen creatures can each use the following benefit once on each of their turns: when the creature hits a target with an attack roll and deals damage to it, the creature can roll a d6 and gain a bonus to the damage equal to the number rolled.", parent = rage) 
+                    desc = desc + f'**{targName}** joins the hunt! \n**Effect**: Call the Hunt \n\n'
+        else:
+            for target in targets:
+                    targList = target.split('|')
+                    targName = targList[0]
+                    desc = desc + f'**{targName}** joins the hunt! \n**Effect**: Call the Hunt \n\n'
+            desc = desc + f'**{name}** \n**THP** {len(targets)} * 5 = `{thp}`'
+            out.append(f'''-desc "{desc}" ''')
+        character().set_temp_hp(thp)
+        out.append(f'-f "Effect| The beast within you grows so powerful that you can spread its ferocity to others and gain resilience from them joining your hunt. When you enter your rage, you can choose a number of other willing creatures you can see within 30 feet of you equal to your Constitution modifier (minimum of one creature). You gain 5 temporary hit points for each creature that accepts this feature. Until the rage ends, the chosen creatures can each use the following benefit once on each of their turns: when the creature hits a target with an attack roll and deals damage to it, the creature can roll a d6 and gain a bonus to the damage equal to the number rolled. \nYou can use this feature a number of times equal to your proficiency bonus, and you regain all expended uses when you finish a long rest." ') 
+        if ignore == False: 
+            mod_cc(cn,-1)
+            out.append(f''' -f "{cn}(-1)| {cc_str(cn)}" ''')
+        else: #-i present in the args list
+            out.append(f''' -f "{cn}| {cc_str(cn)}" ''')
+        out.append(f''' -footer "{name}: {character().hp_str()} \n!callHunt -t one -t two" ''')
+else: 
+    return f''' -f "{foot}" '''
+return ' \n'.join(out)
+</drac2>
+
+-color <color>
+-thumb <image>
+
+#    Call the hunt extra damage snippet
+embed
+<drac2>
+hunt, c = False, combat()
+if c and c.me: 
+    for i in combat().me.effects:
+        if "Call the Hunt" in i.name:
+            hunt = True
+if c and hunt or not c:  #this if triggers if not in avrae combat; or if in combat, but Only if the character has the chosen effect
+    return f''' -d1 1d6 -f "Call the Hunt|Until the rage ends, the chosen creatures can each use the following benefit once on each of their turns: when the creature hits a target with an attack roll and deals damage to it, the creature can roll a d6 and gain a bonus to the damage equal to the number rolled." '''
+else:
+    return f''' -f "Call the Hunt| You have not been granted the bonus damage from a raging Path of the Beast Barbarian with the Call the Hunt feature " '''
+
+</drac2>
+-color <color>
+-thumb <image>
