@@ -1,0 +1,316 @@
+Barbarian Rage Alias. Includes Persistent Rage and subclass specific abilities. Includes: Beast, Totem Warrior, Zealot
+!rage - enters a rage (supports -i to ignore the rage encounter)
+!rage end -- ends rage
+
+#subclass specifics
+#Beast 
+  3 Form of the Beast
+  6 Bestial Soul -- turns beast attacks magical 
+  Infectious Fury -- mentioned; uses another code. 
+  Call the Hunt  -- mentioned; uses another code. 
+
+#Totem Warrior
+    Totem warrior level 3 spirit (applies extra resistances for bear; and an effect that describes what the other totems do. 
+    Totem Warrior level 14 spirit (adds an effect to describe what all totems do.) 
+
+!rage totem [Bear|Eagle|Elk|Tiger|Wolf] -l [3|6|14] -- sets totem warrior animal spirit and it's level. 
+
+#Zealot
+3 Divine Fury -- checks for decided
+6 Fanatical Focus --mentioned; resets to 1 at rage start
+14 Rage beyond Death -- mentioned
+
+!rage divine [necrotic|radiant] --sets additional divine fury damage. 
+
+
+
+
+#ending rage  !alias rage end
+embed <drac2>
+cl,  lvlToRun = "Barbarian", 1
+foot    = load_json(get_gvar('452124fa-b879-4e46-be02-229167abe541')).cl.replace("{cl}",cl).replace("{name}",name).replace("{lvlToRun}",str(lvlToRun))
+
+c, cn, lvl, sc = combat(),"Rage", int(get("BarbarianLevel",0)), load_json(get("subclass", "{}")).get("BarbarianLevel","")
+args = argparse(&ARGS&)
+b = ["bludgeoning", "piercing", "slashing"]
+out = []
+ignore = args.last('i',False)
+R = False
+if c and c.me:
+    for effect in c.me.effects:
+        if "Rage" in effect.name:
+            R = True
+
+if lvl >0 and cc_exists(cn):
+
+    if R == True: #Raging
+        out.append(f''' -title "{name} stops raging!" ''')
+        if c:
+            c.me.remove_effect("Rage")
+        out.append(f''' -desc "You are no longer resistant to any of the damage types, and no longer have advantage on Strength checks and Strength saving throws, and you are now able to cast and concentrate on spells." ''')
+
+    else: #not raging
+     out.append(f''' -title "{name} takes a moment" -desc "{name} is not currently raging" ''')
+else:
+    out.append(f''' -f "{foot}" ''')
+return ' '.join(out)
+</drac2>
+-footer "!rage end "
+-thumb <image>
+-color <color>
+
+#setting up totem spirit barbarian totem spirits; utilizes sub aliases. !rage totem 
+
+embed <drac2>
+cl, sub, lvlToRun = "Barbarian", "Totem Warrior", 3
+foot = load_json(get_gvar('452124fa-b879-4e46-be02-229167abe541')).sc.replace("{cl}",cl).replace("{name}",name).replace("{lvlToRun}",str(lvlToRun)).replace("{sub}",sub)
+
+c, cn, lvl, sc = combat(),"Rage", int(get("BarbarianLevel",0)), load_json(get("subclass", "{}")).get("BarbarianLevel","")
+args = argparse(&ARGS&)
+animal, out = "&1&", []
+animals = ["Bear", "Eagle", "Elk", "Tiger", "Wolf"]
+spirit = ""
+l = int(args.last("l",0))
+out.append(f''' -title "{name} checks their totem animals." ''')
+if lvl >2 and sc == "Totem Warrior":
+    
+    out.append(f'''-desc "Current Totem Animals" ''')
+    found = False
+    for an in animals:
+        if animal.lower() == an.lower():
+            found = True
+            spirit = an
+    if found == False and animal != "&1" + "&":
+        out.append(f'''-desc "Error: Spirit not found. \nacceptable spirits {animals}" ''')
+    if str(l) not in "3,6,14" and animal != "&1" +"&"  and found == True:
+        out.append(f'''-desc "Error: Specify which level totem spirit {"&1&"} is by using `-l 3` or `-l 6` `-l 14`" ''')
+
+    spirit3 = get("totem3", "")
+    spirit6 = get("totem6","")
+    spirit14 = get("totem14", "")
+
+    if l == 3:
+        if lvl > 2: #lvl 3 spirit
+            character().set_cvar("totem3",spirit)
+    
+    if l == 6: 
+        if lvl >5: #lvl 6 spirit
+            character().set_cvar("totem6",spirit)
+        else:
+            out.append(f'''-desc "Error: {name} is not a high enough level to use this feature" ''')
+
+    if l == 14: 
+        if lvl >13: #lvl 14 spirit
+            character().set_cvar("totem14",spirit)
+        else:
+            out.append(f'''-desc "Error: {name} is not a high enough level to use this feature" ''')
+
+    out.append(f'''-f "Totem Spirit Level 3: {spirit3}" ''')
+    if lvl >5:
+        out.append(f'''-f "Totem Spirit Level 6: {spirit6}" ''')
+    return '\n'.join(out)
+
+    if lvl >13:
+        out.append(f'''-f "Totem Spirit Level 14: {spirit14}" ''')
+    return '\n'.join(out)
+else:
+    return f''' -f "{foot}" '''
+</drac2>
+-footer "!rage totem [Bear|Eagle|Elk|Tiger|Wolf] -l [3|6|14]"
+-thumb <image>
+-color <color>
+
+embed <drac2>
+cl,  lvlToRun = "Barbarian", 1
+foot    = load_json(get_gvar('452124fa-b879-4e46-be02-229167abe541')).cl.replace("{cl}",cl).replace("{name}",name).replace("{lvlToRun}",str(lvlToRun))
+
+c, cn, lvl, sc = combat(),"Rage", int(get("BarbarianLevel",0)), load_json(get("subclass", "{}")).get("BarbarianLevel","")
+args = argparse(&ARGS&)
+b = ["bludgeoning", "piercing", "slashing"]
+ignore = args.last('i',False)
+footer = "!rage"
+end = "Your rage ends early if you are knocked unconscious or if your turn ends and you haven't attacked a hostile creature since your last turn or taken damage since then, or as a bonus action on your turn."
+sa, sae, desc="","","You have advantage on Strength checks and Strength saving throws, and are unable to cast or concentrate on spells."
+out, R, d, dur = [''], False, 2 if lvl <9 else 3 if lvl <16 else 4, 10
+if lvl >0 and cc_exists(cn):
+    if lvl > 14: #persistent rage
+        end = "Your rage is so fierce that it ends early only if you fall unconscious or if you choose to end it."
+    if lvl == 20:
+        R = True;
+        out.append(f''' -f "{cn}| Unlimited" ''') 
+    elif get_cc(cn) > 0:
+        R = True;
+        if ignore == False: 
+            mod_cc(cn,-1)
+            out.append(f''' -f "{cn}(-1)| {cc_str(cn)}" ''')
+        else: #-i present in the args list
+            out.append(f''' -f "{cn}| {cc_str(cn)}" ''')
+    else: 
+        out.append(f''' -title "{name} tries to rage!" ''')
+        out.append(f''' -desc "{name} has already used all of their rage today !" ''')
+        out.append(f''' -f "{cn}| {cc_str(cn)}" ''')
+else:
+    out.append(f''' -f "{foot}" ''')
+if R == False: #fails rage
+    return ' '.join(out)
+else: #sucessful rage     
+    out.append(f''' -title "{name} rages!" ''')
+    out.append(f''' -desc "{desc} {end}" ''')
+    if c:
+        T =""
+        if c.me:
+            t=c.me.resists.immune
+            for r in b:
+                if r not in t:
+                    T = T + " -resist " + r
+            c.me.add_effect('Rage', f'-d {d} {T}', dur, desc = "You have advantage on Strength checks and Strength saving throws, and are unable to cast or concentrate on spells. " + end)
+            out.append(f''' -f "Effect| {c.me.get_effect("Rage")}" ''')
+    else:
+        resist = ' ,'.join(b)
+        out.append(f''' -f "Rage | Your rage lasts for one minute, or ten rounds. for the duration you have resistance to {resist} damage. You also have advantage on Strength checks and Strength saving throws, and are unable to cast or concentrate on spells. {end}" ''')
+
+#------subclass specific stuff, -------
+#Ancestral Guardian, Battlerager, Berserker, Storm Herald, Wild Magic
+#Beast, Totem Warrior, Zealot
+
+#Ancestral Guardian
+#Ancestral protectors 3 , spirit shield req rage. effect 6, vengeful ancestors14; upgrade to sheild
+#if "Ancestral Guardian" in sc:
+
+#Battlerager
+#if "Battlerager" in sc:
+
+
+#Beast -- supports Form of the Beast, Beastial Soul, Infectious Fury, Call the Hunt
+ #-- Bite recovery & Tail reaction are actions in the new avrae
+if "Beast" in sc:
+    footer = "!rage -form [bite | claws | tail] "
+    dtype, n, die= "", "Rage transformation: ", ""
+    if lvl >=6: 
+        dtype = "magical "
+        n = "Enhanced rage transformation: "
+    an,aef = "aspect not chosen","Run again; using `!rage -i -form tail`, `!rage -i -form claws`, or `!rage -i -form bite`"
+    form = args.last('form',"")
+    if "bite" in form.lower():
+        an = "Bite"
+        die = "1d8[" +dtype+ "piercing]"
+        aef = "Your mouth transforms into a bestial muzzle or great mandibles (your choice). Once on each of your turns when you damage a creature with this bite, you regain "+ proficiencyBonus + "hit points, provided you have less than "+ floor(hp/2)+" points when you hit."
+    if "claw" in form.lower():
+        an = "Claws"
+        die = "1d6[" +dtype+ "slashing]"
+        aef ="Each of your hands transforms into a claw, which you can use as a weapon if it's empty. Once on each of your turns when you attack with a claw using the Attack action, you can make one additional claw attack as part of the same action."
+    if "tail" in form.lower():
+        an = "Tail"
+        die = "1d8[" +dtype+ "piercing]"
+        aef = "You grow a lashing, spiny tail, which has the reach property. If a creature you can see within 10 feet of you hits you with an attack roll, you can use your reaction to swipe your tail and roll a d8, applying a bonus to your AC equal to the number rolled, potentially causing the attack to miss you."
+    if combat(): 
+            if combat().me:
+                if "1" in die:
+                    combat().me.add_effect(f'{n}{an}',f' -attack "{proficiencyBonus+strengthMod}|{die}+{strengthMod}|{aef}"',  -1, parent = combat().me.get_effect("rage"), desc = aef )
+    out.append(f'''-f "Form of the Beast| When you enter your rage, you can transform, revealing the bestial power within you. Until the rage ends, you manifest a natural weapon. It counts as a simple melee weapon for you, and you add your Strength modifier to the attack and damage rolls when you attack with it, as normal." ''')
+    out.append(f'''-f "Form of the Beast: {an}| {aef}" ''')
+    if lvl >=11:
+        out.append(f'''-f "Infectious Fury| When you hit a creature with your natural weapons while you are raging, the beast within you can curse your target with rabid fury. The target must succeed on a Wisdom saving throw (DC {8+ constitutionMod + proficiencyBonus}) or suffer one of the following effects (your choice):\n- The target must use its reaction to make a melee attack against another creature of your choice that you can see.-- Use `!a Infectious Fury (Damage)` \n- The target takes 2d12 psychic damage. -- use `!a Infectious Fury (Reaction)`\n\nYou can use this feature a number of times equal to your proficiency bonus, and you regain all expended uses when you finish a long rest." ''')
+    if lvl >=14:
+        out.append(f'''-f "Call the hunt| The beast within you grows so powerful that you can spread its ferocity to others and gain resilience from them joining your hunt. When you enter your rage, you can choose a number of other willing creatures you can see within 30 feet of you equal to your Constitution modifier (minimum of one creature). You gain 5 temporary hit points for each creature that accepts this feature. Until the rage ends, the chosen creatures can each use the following benefit once on each of their turns: when the creature hits a target with an attack roll and deals damage to it, the creature can roll a d6 and gain a bonus to the damage equal to the number rolled. Use `!CallHunt -t target1 -t target2` " ''')
+#Berserker
+#if "Berserker" in sc:
+#frenzy 3, mindless rage 6
+
+#Storm Herald
+#if "Storm Herald" in sc:
+#storm aura3; shielding storm10, raging storm14
+
+#Totem Warrior -- suports level 3 totem and level 14 totem. Level 6 totem can also be set up; but has no bearing on rage 
+if "Totem Warrior" in sc:
+    spirit3 = get("totem3","")
+    spirit14 = get("totem14","")
+    sa3 = "Level 3 Totem not specified"
+    sae3 = "you choose a totem spirit and gain its feature. Run `!rage totem animal -l 3` to set it and then `!rage -i` to rage without using a counter"
+    sa14 = "level 14 Totem not specified"
+    sae14 = "you choose a totem spirit and gain its feature. Run `!rage totem animal -l 14` to set it and then `!rage -i` to rage without using a counter"
+
+    #lvl 3 totems
+    if lvl >2:
+        if "bear" in spirit3.lower():
+            b = ["acid", "cold","fire","force","lightning","necrotic","poison","radiant", "thunder"]
+            sa3 = "Level 3 Totem: Bear Totem"
+            sae3 = "While raging, you have resistance to all damage except psychic damage. The spirit of the bear makes you tough enough to stand up to any punishment."
+        if "eagle" in spirit3.lower():
+            sa3 = "Level 3 Totem: Eagle"
+            sae3 = "While you're raging and aren't wearing heavy armor, other creatures have disadvantage on opportunity attack rolls against you, and you can use the Dash action as a bonus action on your turn. The spirit of the eagle makes you into a predator who can weave through the fray with ease."
+        if "elk" in spirit3.lower():
+            sa3 = "Level 3 Totem: Elk"
+            sae3 ="While you're raging and aren't wearing heavy armor, your walking speed increases by 15 feet. The spirit of the elk makes you extraordinarily swift."
+        if "tiger" in spirit3.lower():
+            sa3 = "Level 3 Totem: Tiger"
+            sae3 = "While raging, you can add 10 feet to your long jump distance and 3 feet to your high jump distance. The spirit of the tiger empowers your leaps."
+        if "wolf" in spirit3.lower():
+            sa3 = "Level 3 Totem: Wolf"
+            sae3 = "While you're raging, your friends have advantage on melee attack rolls against any creature within 5 feet of you that is hostile to you. The spirit of the wolf makes you a leader of hunters."
+        if sa3 != "Level 3 Totem not specified":
+            if c:
+                if sa3 == "Level 3 Totem: Bear Totem":
+                    if c.me: 
+                        t=c.me.resists.immune
+                        for r in b:
+                            if r not in t:
+                                T = T + " -resist " + r
+                        c.me.add_effect(f'{sa3}', f' {T}', -1,parent =combat().me.get_effect("Rage"),  desc =f'{sae3}')
+                else:
+                    if c.me:
+                        c.me.add_effect(f'{sa3}','',-1,parent =combat().me.get_effect("Rage"), desc = f'{sae3}' )
+        out.append(f'''-f "{sa3}| {sae3}" ''')
+    if lvl > 13: #lvl 14 totems
+        if "bear" in spirit14.lower():
+            sa14 = "Level 14 Totem: Bear Totem"
+            sae14 =  "While you‘re raging, any creature within 5 feet of you that‘s hostile to you has disadvantage on attack rolls against targets other than you or another character with this feature. An enemy is immune to this effect if it can‘t see or hear you or if it can‘t be frightened."
+        if "eagle" in spirit14.lower():
+            sa14 = "Level 14 Totem: Eagle Totem"
+            sae14 = "While raging, you have a flying speed equal to your current walking speed. This benefit works only in short bursts; you fall if you end your turn in the air and nothing else is holding you aloft."
+        if "elk" in spirit14.lower(): 
+            sa14 = "Level 14 Totem: Elk Totem"
+            sae14 = "While raging, you can use a bonus action during your move to pass through the space of a Large or smaller creature. That creature must succeed on a Strength saving throw (DC 8 + your Strength bonus + your proficiency bonus) or be knocked prone and take bludgeoning damage equal to 1d12 + your Strength modifier."
+        if "tiger" in spirit14.lower():
+            sa14 = "Level 14 Totem: Tiger Totem"
+            sae14 = "While you‘re raging, if you move at least 20 feet in a straight line toward a Large or smaller target right before making a melee weapon attack against it, you can use a bonus action to make an additional melee weapon attack against it."
+        if "wolf" in spirit14.lower():
+            sa14 = "Level 14 Totem: Wolf Totem"
+            sae14 = "While you‘re raging, you can use a bonus action on your turn to knock a Large or smaller creature prone when you hit it with melee weapon attack."
+        if sa14 != "level 14 Totem not specified":
+           if c:
+                if c.me:
+                    c.me.add_effect(f'{sa14}', '',-1, parent =combat().me.get_effect("Rage"), desc = f'{sae14}' )
+                    if sa14 == "Level 14 Totem: Elk Totem":
+                        dc = strengthMod+8+proficiencyBonus
+                        combat().me.add_effect("Level 14 Elk Totem: Knockdown Damage", f' -attack "|d12+{strengthMod}[bludgeoning]|While raging, you can use a bonus action during your move to pass through the space of a Large or smaller creature. That creature must succeed on a Strength saving throw, DC:{dc} or be knocked prone and take bludgeoning damage equal to 1d12 + your Strength modifier."',-1, parent = combat().me.get_effect("Level 14 Totem: Elk Totem"), desc ="After the target makes a strength save dc:(" +dc + "), the target takes 1d2 + your strength modifier bludgeoning damage")
+        out.append(f'''-f "{sa14}| {sae14}" ''')
+
+#Wild Magic
+#if "Wild Magic" in sc:
+#wild magic surge 3, unstable backlash 10, controlled surge 14
+
+#Zealot
+if "Zealot" in sc:
+#divine fury 3, rage beyond death 14
+    if lvl >=3: #divine fury
+        fury = get("divineFury","")
+        dtype = ""
+        if fury == "":
+            dtype = "You have not chosen your extra damage for the **divine fury** feature.  Run `!rage divine necrotic` or `!rage divine radiant` to set it and then `!rage -i` to rage without using a counter"
+        else:
+            dtype = "The damage type you have chosen is " + fury
+        out.append(f'''-f "Divine Fury| you can channel divine fury into your weapon strikes. While you're raging, the first creature you hit on each of your turns with a weapon attack takes extra damage equal to 1d6 + half your barbarian level. The extra damage is necrotic or radiant; you choose the type of damage when you gain this feature. \n\n{dtype} \n use the `fury` snippet with your first attack" ''')
+    if lvl >=6: #fanatical focus
+        if cc_exists("Fanatical Focus"):
+            set_cc("Fanatical Focus",1)
+        out.append(f'''-f "Fanatical Focus| The divine power that fuels your rage can protect you. If you fail a saving throw while you're raging, you can reroll it, and you must use the new roll. You can use this ability only once per rage." ''')
+    if lvl >=14: #rage beyond death
+        c.me.add_effect('Rage Beyond Death', '',-1, parent =combat().me.get_effect("Rage"), desc = "While raging, having 0 hp doesn't knock you unconsious. you still must make death saves and suffer normal effects of taking damage at 0 hp. However if you would die due to failed death saves, you do not die until your rage ends, and only if you are still at 0 hp" )
+        out.append(f''' -f" Rage beyond Death| While you're raging, having 0 hit points doesn't knock you unconscious. You still must make death saving throws, and you suffer the normal effects of taking damage while at 0 hit points. However, if you would die due to failing death saving throws, you don't die until your rage ends, and you die then only if you still have 0 hit points." ''')
+return '\n'.join(out)
+</drac2>
+-footer "{{footer}}"
+-thumb <image>
+-color <color>
+
